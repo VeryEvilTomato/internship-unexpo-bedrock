@@ -12,16 +12,16 @@ import {requestAllProfiles} from '@api';
  * in the system.
  */
 
-const UserProfileListComponent = ({request, navigation}) => {
+const UserProfileListComponent = ({request, navigation, dispatch}) => {
   const {baseURL, token} = request;
   const [userDataList, setUserDataList] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
-      requestAllProfiles(baseURL, token).then(response => {
+      requestAllProfiles(baseURL, token, dispatch).then(response => {
         setUserDataList(response.data.results);
       });
-    }, [baseURL, token]),
+    }, [baseURL, dispatch, token]),
   );
 
   return (

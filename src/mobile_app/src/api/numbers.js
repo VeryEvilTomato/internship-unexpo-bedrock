@@ -4,11 +4,11 @@ import {invalidateToken} from '@redux/actions';
 import {STATUS} from '@constants';
 import {Alert} from 'react-native';
 
-export const requestUsersdata = async (id, baseURL, token, dispatch) => {
+export const requestNumber = async (id, baseURL, token, dispatch) => {
   return axios({
     method: 'get',
     baseURL,
-    url: `${URL.USERSDATA}/${id}/`,
+    url: `${URL.NUMS}/${id}/`,
     responseType: 'json',
     headers: {
       Authorization: `Bearer ${token.access}`,
@@ -23,11 +23,11 @@ export const requestUsersdata = async (id, baseURL, token, dispatch) => {
     });
 };
 
-export const requestAllUsersdata = async (baseURL, token, dispatch) => {
+export const requestAllNumbers = async (baseURL, token, dispatch) => {
   return axios({
     method: 'get',
     baseURL,
-    url: `${URL.USERSDATA}/`,
+    url: `${URL.NUMS}/`,
     headers: {
       Authorization: `Bearer ${token.access}`,
     },
@@ -41,24 +41,18 @@ export const requestAllUsersdata = async (baseURL, token, dispatch) => {
     });
 };
 
-export const createUsersdata = async (
-  user_id,
-  baseURL,
-  token,
-  data,
-  dispatch,
-) => {
+export const createNumber = async (user_id, baseURL, token, data, dispatch) => {
   return axios({
     method: 'post',
     baseURL,
-    url: `${URL.USERSDATA}/`,
-    data: {...data, user: user_id},
+    url: `${URL.NUMS}/`,
+    data: {number: data, user: user_id, logs: []},
     headers: {
       Authorization: `Bearer ${token.access}`,
     },
   })
     .then(response => {
-      Alert.alert('', 'Información actualizada.', [
+      Alert.alert('', 'Número correctamente agregado.', [
         {
           text: 'Continuar',
           onPress: () => {},
@@ -75,11 +69,11 @@ export const createUsersdata = async (
     });
 };
 
-export const updateUsersdata = async (id, baseURL, token, data, dispatch) => {
+export const updateNumber = async (id, baseURL, token, data, dispatch) => {
   return axios({
     method: 'put',
     baseURL,
-    url: `${URL.USERSDATA}/${id}/`,
+    url: `${URL.NUMS}/${id}/`,
     data,
     headers: {
       Authorization: `Bearer ${token.access}`,
@@ -96,6 +90,31 @@ export const updateUsersdata = async (id, baseURL, token, data, dispatch) => {
         status: STATUS.SUCCESS,
         data: response.data,
       };
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch(invalidateToken());
+    });
+};
+
+export const deleteNumber = async (id, baseURL, token, dispatch) => {
+  return axios({
+    method: 'del',
+    baseURL,
+    url: `${URL.NUMS}/${id}/`,
+    responseType: 'json',
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+    },
+  })
+    .then(response => {
+      Alert.alert('', 'Número eliminado del sistema.', [
+        {
+          text: 'Continuar',
+          onPress: () => {},
+        },
+      ]);
+      return response;
     })
     .catch(error => {
       console.log(error);

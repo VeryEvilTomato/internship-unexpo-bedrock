@@ -13,13 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+"""
+    Aquí simplemente importé el método que cree y lo deje
+    en una ruta aislada "new-log" de las demás.
+"""
+
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from userData.views import UserViewSet, UserDataViewSet
 from nums.views import NumberViewSet
-from logs.views import LogViewSet
+import logs.views as LogViews
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -30,7 +36,7 @@ router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'usersdata', UserDataViewSet)
 router.register(r'nums', NumberViewSet)
-router.register(r'logs', LogViewSet)
+router.register(r'logs', LogViews.LogViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,4 +45,5 @@ urlpatterns = [
     path('api/toke/refresh/', TokenRefreshView.as_view()),
     path('api/token/verify/', TokenVerifyView.as_view(), name="token_verify"),
     path('api-auth/', include('rest_framework.urls')),
+    path('new-log/', LogViews.CreateLogView),
 ]

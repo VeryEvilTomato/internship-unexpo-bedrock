@@ -5,11 +5,23 @@ import {Text, Button, Divider} from 'react-native-elements';
 import {View, BackHandler} from 'react-native';
 
 import {FORM_INIT} from '@constants';
-import {requestProfile} from '@api';
+import {requestProfile, deleteNumber} from '@api';
 import {accessLevelToText} from '@utils';
 import {OverlayModal} from '@containers';
 import UserDataEditor from '../UserDataEditor';
 import PhoneNumberEditor from '../PhoneNumberEditor';
+
+function numberDeleteHandler(
+  numberId,
+  baseURL,
+  token,
+  dispatch,
+  setIsUpdatingDetail,
+) {
+  deleteNumber(numberId, baseURL, token, dispatch).then(response => {
+    setIsUpdatingDetail(true);
+  });
+}
 
 /*
  * Screen to display and request all data from a specific profile.
@@ -46,7 +58,7 @@ const UserDetailScreenComponent = ({
   useFocusEffect(
     useCallback(() => {
       if (isUpdatingDetail) {
-        requestProfile(id, baseURL, token)
+        requestProfile(id, baseURL, token, dispatch)
           .then(response => {
             // Set user information & numbers
             setUserState(response.data);
@@ -56,7 +68,7 @@ const UserDetailScreenComponent = ({
             console.log(error);
           });
       }
-    }, [isUpdatingDetail, id, baseURL, token]),
+    }, [isUpdatingDetail, id, baseURL, token, dispatch]),
   );
   return (
     <View>
@@ -110,8 +122,20 @@ const UserDetailScreenComponent = ({
           <View>
             <Text>Numeros</Text>
             {userState.nums.map((phone, index) => (
-              <View key={index}>
+              <View key={index} style={{display: 'flex', flexDirection: 'row'}}>
                 <Text>{phone.number}</Text>
+                <Button
+                  title="Eliminar"
+                  onPress={() => {
+                    numberDeleteHandler(
+                      phone.id,
+                      baseURL,
+                      token,
+                      dispatch,
+                      setIsUpdatingDetail,
+                    );
+                  }}
+                />
               </View>
             ))}
           </View>

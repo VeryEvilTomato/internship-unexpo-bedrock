@@ -45,12 +45,44 @@ export const PROPS_CREDENTIALS = {
 
 export const PROPS_NEW_USER = {
   BASE: {
-    maxLength: 30,
+    maxLength: 20,
     autoCorrect: false,
     leftIcon: {type: 'material', name: 'face'},
   },
   NAME: {
     FIRST: {placeholder: 'Su nombre aquí'},
     LAST: {placeholder: 'Su apellido aquí'},
+  },
+  HOME: {
+    NAME: {
+      maxLength: 8,
+      leftIcon: {type: 'material', name: 'location-city'},
+    },
+    BLOCK: {
+      maxLength: 8,
+      leftIcon: {type: 'material', name: 'domain'},
+    },
+    NUMBER: {
+      maxLength: 8,
+      leftIcon: {type: 'material', name: 'home'},
+    },
+  },
+  CAR: {
+    ENROLLMENT: {
+      maxLength: 8,
+      autoCorrect: false,
+      leftIcon: {type: 'material', name: 'confirmation-number'},
+    },
+    BRAND: {
+      maxLength: 20,
+      leftIcon: {type: 'material', name: 'drive-eta'},
+    },
+    COLOR: {
+      maxLength: 20,
+      leftIcon: {type: 'material', name: 'palette'},
+    },
+  },
+  PHONE_NUMBER: {
+    maxLength: 11,
   },
 };

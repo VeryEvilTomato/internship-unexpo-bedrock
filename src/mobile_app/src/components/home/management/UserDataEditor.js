@@ -15,22 +15,17 @@ function submitHandler(
   token,
   dispatch,
   setIsUpdatingDetail,
-  toggleOverlay,
 ) {
   // If there is no existing user data, create it.
   if (dataExists) {
-    console.log('User updated');
     updateUsersdata(formState.id, baseURL, token, formState, dispatch).then(
       response => {
         setIsUpdatingDetail(true);
-        toggleOverlay();
       },
     );
   } else {
-    console.log('User created');
     createUsersdata(id, baseURL, token, formState, dispatch).then(response => {
       setIsUpdatingDetail(true);
-      toggleOverlay();
     });
   }
 }
@@ -66,7 +61,7 @@ export default function UserDataEditor({
         <Text>Nivel de acceso:</Text>
         <Picker
           selectedValue={formState.accessLevel}
-          style={{height: 100, width: 400}}
+          style={{height: 50, width: 400}}
           onValueChange={(itemValue, itemIndex) => {
             setFormState({...formState, accessLevel: itemValue});
           }}>
@@ -85,7 +80,7 @@ export default function UserDataEditor({
           onChangeText={text => {
             setFormState({...formState, residenceName: text});
           }}
-          {...PROPS_NEW_USER.BASE}
+          {...PROPS_NEW_USER.HOME.NAME}
         />
       </View>
       <View>
@@ -95,7 +90,7 @@ export default function UserDataEditor({
           onChangeText={text => {
             setFormState({...formState, streetBlockNumber: text});
           }}
-          {...PROPS_NEW_USER.BASE}
+          {...PROPS_NEW_USER.HOME.BLOCK}
         />
       </View>
       <View>
@@ -105,7 +100,7 @@ export default function UserDataEditor({
           onChangeText={text => {
             setFormState({...formState, homeNumber: text});
           }}
-          {...PROPS_NEW_USER.BASE}
+          {...PROPS_NEW_USER.HOME.NUMBER}
         />
       </View>
       <Text>Información de vehículo:</Text>
@@ -116,7 +111,7 @@ export default function UserDataEditor({
           onChangeText={text => {
             setFormState({...formState, brandModel: text});
           }}
-          {...PROPS_NEW_USER.BASE}
+          {...PROPS_NEW_USER.CAR.BRAND}
         />
       </View>
       <View>
@@ -124,9 +119,9 @@ export default function UserDataEditor({
         <Input
           value={formState.enrollment}
           onChangeText={text => {
-            setFormState({...formState, enrollment: text});
+            setFormState({...formState, enrollment: text.toUpperCase()});
           }}
-          {...PROPS_NEW_USER.BASE}
+          {...PROPS_NEW_USER.CAR.ENROLLMENT}
         />
       </View>
       <View>
@@ -136,7 +131,7 @@ export default function UserDataEditor({
           onChangeText={text => {
             setFormState({...formState, color: text});
           }}
-          {...PROPS_NEW_USER.BASE}
+          {...PROPS_NEW_USER.CAR.COLOR}
         />
       </View>
       <Button
@@ -151,7 +146,6 @@ export default function UserDataEditor({
             token,
             dispatch,
             setIsUpdatingDetail,
-            toggleOverlay,
           );
         }}
       />
