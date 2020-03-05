@@ -4,7 +4,7 @@ Minimalistic IoT system set in a RaspBerry Pi whose purpose is to manage a group
 
 ## About
 
-This system was developed as an internship work project to get an electronic engineering degree at the UNEXPO Vicerrectorado Puerto Ordaz University.
+This system is being developed as an internship work project to get an electronic engineering degree at the UNEXPO Vicerrectorado Puerto Ordaz University.
 
 Authors:
 * Gabriel Osorio
