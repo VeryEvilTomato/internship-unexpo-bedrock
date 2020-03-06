@@ -9,6 +9,8 @@ from rest_framework.response import Response
 
 from logs.serializers import LogSerializer
 
+from datetime import datetime
+
 # Create your views here.
 
 def test(request):
@@ -32,8 +34,21 @@ def log_list(request, format=None):
         return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def log_detail(request, date_str, format=None):
+    '''
+    Lists logs within an specific date
+    '''
+
+    datetime_obj = datetime.strptime(date_str, '%Y%m%d')
+    date_obj = datetime_obj.date()
+
+    logs_within_date = Log.objects.filter(opened__date = date_obj)
 
 
+    serializer = LogSerializer(logs_within_date, many=True)
+
+    return Response(serializer.data)
 
 
 
