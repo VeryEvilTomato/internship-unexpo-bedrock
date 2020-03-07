@@ -4,4 +4,4 @@ from logs.models import Log
 class LogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Log
-        fields = ['id', 'opened']
+        fields = ['number_id', 'opened']
