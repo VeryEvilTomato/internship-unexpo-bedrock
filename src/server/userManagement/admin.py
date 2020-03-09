@@ -7,10 +7,10 @@ from userManagement.models import UserManagement
 class AdminUserManagement(admin.ModelAdmin):
 
     list_display = ("nombre", "apellido", "telefono",
-                    "numero_manzana", "numero_casa", "bloqueo")
+                    "nivelAcceso", "bloqueo")
     search_fields = ("nombre", "apellido", "telefono")
 
-    list_filter = ("nombre", "apellido", "telefono", "bloqueo")
+    list_filter = ("nombre", "apellido", "telefono","nivelAcceso", "bloqueo")
 
 
 admin.site.register(UserManagement, AdminUserManagement)
