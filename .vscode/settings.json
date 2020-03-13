@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/home/gabriel/.local/share/virtualenvs/unexpo-bedrock-XLNwGxZ8/bin/python"
+    "python.pythonPath": "/home/gabriel/.local/share/virtualenvs/unexpo-bedrock-XLNwGxZ8/bin/python",
+    "python.formatting.provider": "black"
 }

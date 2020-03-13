@@ -15,9 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from userData.views import UserDataViewSet
+from userHome.views import UserHomeViewSet
+from nums.views import NumberViewSet
+from logs.views import LogViewSet
+
+homeRouter = DefaultRouter()
+dataRouter = DefaultRouter()
+numRouter = DefaultRouter()
+logRouter = DefaultRouter()
+homeRouter.register(r"userHome", UserHomeViewSet)
+dataRouter.register(r"userData", UserDataViewSet)
+numRouter.register(r"userNum", NumberViewSet)
+logRouter.register(r"logData", LogViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/logs/', include('logs.urls')),
-    path('api/nums/', include('nums.urls')),
+    path("admin/", admin.site.urls),
+    path("api/home/", include(homeRouter.urls)),
+    path("api/home/data/", include(dataRouter.urls)),
+    path("api/home/data/num/", include(numRouter.urls)),
+    path("api/home/data/num/log/", include(logRouter.urls)),
 ]

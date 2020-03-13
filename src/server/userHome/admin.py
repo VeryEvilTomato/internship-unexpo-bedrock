@@ -3,12 +3,19 @@ from userHome.models import UserHome
 
 # Register your models here.
 
+"""
+    class to show extra fields in admin interface for user home data, such as:
+        list_display
+        search_fields
+        list_filter
+"""
+
 
 class AdminUserHome(admin.ModelAdmin):
 
-    list_display = ("nombreResidencia", "numeroManzana", "numeroCasa")
-    search_fields = ("numeroManzana", "numeroCasa")
-    list_filter = ("numeroManzana", "numeroCasa")
+    list_display = ("residenceName", "streetBlockNumber", "homeNumber")
+    search_fields = ("residenceName", "homeNumber")
+    list_filter = ("residenceName", "homeNumber")
 
 
 admin.site.register(UserHome, AdminUserHome)
