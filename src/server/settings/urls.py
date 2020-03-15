@@ -34,7 +34,7 @@ router.register(r"logs", LogViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include(router.urls)),
+    path("api/", include(router.urls)),
     path("api/token/", TokenObtainPairView.as_view()),
     path("api/toke/refresh/", TokenRefreshView.as_view()),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
