@@ -2,7 +2,12 @@ from rest_framework import serializers
 from nums.models import Number
 
 
-class NumberSerializer(serializers.ModelSerializer):
+class NumberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Number
-        fields = "__all__"
+        fields = [
+            "id",
+            "number",
+            "userData",
+            "logs",
+        ]

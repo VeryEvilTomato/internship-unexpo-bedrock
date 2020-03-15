@@ -2,7 +2,13 @@ from rest_framework import serializers
 from .models import UserHome
 
 
-class UserHomeSerializer(serializers.ModelSerializer):
+class UserHomeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserHome
-        fields = "__all__"
+        fields = [
+            "id",
+            "residenceName",
+            "streetBlockNumber",
+            "homeNumber",
+            "usersdata",
+        ]

@@ -14,7 +14,7 @@ class Number(models.Model):
     # user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
     number = models.CharField(max_length=10)
     userData = models.ForeignKey(
-        UserData, null=True, blank=False, on_delete=models.CASCADE
+        UserData, related_name="nums", null=True, blank=False, on_delete=models.CASCADE
     )
 
     class Meta:

@@ -20,20 +20,22 @@ from userData.views import UserDataViewSet
 from userHome.views import UserHomeViewSet
 from nums.views import NumberViewSet
 from logs.views import LogViewSet
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
-homeRouter = DefaultRouter()
-dataRouter = DefaultRouter()
-numRouter = DefaultRouter()
-logRouter = DefaultRouter()
-homeRouter.register(r"userHome", UserHomeViewSet)
-dataRouter.register(r"userData", UserDataViewSet)
-numRouter.register(r"userNum", NumberViewSet)
-logRouter.register(r"logData", LogViewSet)
+router = DefaultRouter()
+router.register(r"homes", UserHomeViewSet)
+router.register(r"users", UserDataViewSet)
+router.register(r"nums", NumberViewSet)
+router.register(r"logs", LogViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/home/", include(homeRouter.urls)),
-    path("api/home/data/", include(dataRouter.urls)),
-    path("api/home/data/num/", include(numRouter.urls)),
-    path("api/home/data/num/log/", include(logRouter.urls)),
+    path("", include(router.urls)),
+    path("api/token/", TokenObtainPairView.as_view()),
+    path("api/toke/refresh/", TokenRefreshView.as_view()),
+    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
 ]

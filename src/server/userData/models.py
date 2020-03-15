@@ -21,7 +21,13 @@ class UserData(models.Model):
     ]
     name = models.CharField(max_length=20, verbose_name="Nombre")
     lastName = models.CharField(max_length=20, verbose_name="Apellido")
-    home = models.ForeignKey(UserHome, null=True, blank=False, on_delete=models.CASCADE)
+    home = models.ForeignKey(
+        UserHome,
+        related_name="usersdata",
+        null=True,
+        blank=False,
+        on_delete=models.CASCADE,
+    )
     accesLevel = models.CharField(
         max_length=3,
         choices=ACCES_LEVEL,
@@ -29,9 +35,6 @@ class UserData(models.Model):
         verbose_name="Nivel de acceso",
     )
     locks = models.BooleanField(null=False, default=False, verbose_name="Bloqueado")
-    # loginData = models.OneToOneField(
-    #     user_logged_in, null=True, blank=False, on_delete=models.CASCADE
-    # )
 
     def __str__(self):
         return "Nombre: %s | Apellido= %s | Nivel= %s | Bloqueado= %s" % (
