@@ -14,9 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from userData.views import UserDataViewSet
+from userData.views import UserViewSet, UserDataViewSet
+from userData.serializers import ChangePasswordSerializer
 from userHome.views import UserHomeViewSet
 from nums.views import NumberViewSet
 from logs.views import LogViewSet
@@ -27,15 +29,17 @@ from rest_framework_simplejwt.views import (
 )
 
 router = DefaultRouter()
-router.register(r"homes", UserHomeViewSet)
-router.register(r"users", UserDataViewSet)
-router.register(r"nums", NumberViewSet)
-router.register(r"logs", LogViewSet)
+router.register(r'homes', UserHomeViewSet)
+router.register(r'users', UserViewSet)
+router.register(r'usersdata', UserDataViewSet)
+router.register(r'nums', NumberViewSet)
+router.register(r'logs', LogViewSet)
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/", include(router.urls)),
-    path("api/token/", TokenObtainPairView.as_view()),
-    path("api/toke/refresh/", TokenRefreshView.as_view()),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api/token/', TokenObtainPairView.as_view()),
+    path('api/toke/refresh/', TokenRefreshView.as_view()),
+    path('api/token/verify/', TokenVerifyView.as_view(), name="token_verify"),
+    path('api-auth/', include('rest_framework.urls')),
 ]

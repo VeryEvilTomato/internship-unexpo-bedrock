@@ -1,15 +1,18 @@
 from django.db import models
-from django.contrib.auth import user_logged_in
+from django.contrib.auth.models import User
 from userHome.models import UserHome
 
 # Create your models here.
 
 """
-    Model for storing information of registered users.
+    Extending the existing User model for storing information of registered users.
 """
 
 
 class UserData(models.Model):
+
+    # Access Levels for users
+
     ADMIN_LEVEL = "NA"
     NORMAL_LEVEL = "NU"
     LIMIT_LEVEL = "NL"
@@ -19,8 +22,28 @@ class UserData(models.Model):
         (NORMAL_LEVEL, "Normal"),
         (LIMIT_LEVEL, "Limitado"),
     ]
-    name = models.CharField(max_length=20, verbose_name="Nombre")
-    lastName = models.CharField(max_length=20, verbose_name="Apellido")
+    """
+    store information related to User, 
+    using a OneToOneField to a model 
+    containing the fields for additional information
+    """
+    user = models.OneToOneField(
+        User,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="usersdata",
+    )
+    # model that can choice access level
+    accesLevel = models.CharField(
+        max_length=3,
+        choices=ACCES_LEVEL,
+        default=NORMAL_LEVEL,
+        verbose_name="Nivel de acceso",
+    )
+    # model that can select if the user is lock or not
+    locks = models.BooleanField(
+        null=False, default=False, verbose_name="Bloqueado")
+    # foreign key for relationship between home model and user model
     home = models.ForeignKey(
         UserHome,
         related_name="usersdata",
@@ -28,18 +51,11 @@ class UserData(models.Model):
         blank=False,
         on_delete=models.CASCADE,
     )
-    accesLevel = models.CharField(
-        max_length=3,
-        choices=ACCES_LEVEL,
-        default=NORMAL_LEVEL,
-        verbose_name="Nivel de acceso",
-    )
-    locks = models.BooleanField(null=False, default=False, verbose_name="Bloqueado")
+    # converts data to a string
 
     def __str__(self):
-        return "Nombre: %s | Apellido= %s | Nivel= %s | Bloqueado= %s" % (
-            self.name,
-            self.lastName,
+        return "Nivel= %s | Bloqueado= %s | Casa= %s" % (
             self.accesLevel,
             self.locks,
+            self.home,
         )

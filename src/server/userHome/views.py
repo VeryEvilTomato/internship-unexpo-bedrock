@@ -10,4 +10,4 @@ from .serializers import UserHomeSerializer
 class UserHomeViewSet(viewsets.ModelViewSet):
     serializer_class = UserHomeSerializer
     queryset = UserHome.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]

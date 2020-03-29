@@ -6,6 +6,6 @@ class LogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Log
         fields = [
-            "number",
-            "opened",
+            'number',
+            'opened',
         ]
