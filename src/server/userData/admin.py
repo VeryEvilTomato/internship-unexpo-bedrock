@@ -1,21 +1,35 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from userData.models import UserData
+from nums.models import Number
 
 # Register your models here.
 
 """
-    class to show extra fields in admin interface for user data, such as:
-        list_display
-        search_fields
-        list_filter
+    Making a Custon User class
 """
 
 
-class AdminUserData(admin.ModelAdmin):
+class UserInline(admin.StackedInline):
+    # Define an inline admin descriptor for UserData model
+    model = UserData
+    can_delete = False
+    verbose_name_plural = 'Users'
 
-    list_display = ("name", "lastName", "accesLevel", "locks")
-    search_fields = ("name", "lastName")
-    list_filter = ("name", "lastName", "accesLevel", "locks")
+
+class NumsInline(admin.StackedInline):
+    # Define an inline admin descriptor for Nums model
+    model = Number
+    can_delete = False
+    verbose_name_plural = 'Nums'
 
 
-admin.site.register(UserData, AdminUserData)
+class UserAdmin(BaseUserAdmin):
+    # Define a new UserAdmin
+    inlines = (UserInline, NumsInline)
+
+
+# Re-register UserAdmin
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

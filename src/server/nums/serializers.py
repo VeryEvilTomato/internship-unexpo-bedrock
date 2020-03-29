@@ -8,6 +8,6 @@ class NumberSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'id',
             'number',
-            'userData',
+            'user',
             'logs',
         ]

@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 """
@@ -8,6 +7,7 @@ from django.db import models
 
 
 class UserHome(models.Model):
+
     residenceName = models.CharField(
         max_length=30, null=True, blank=True, verbose_name="Nombre de residencia"
     )

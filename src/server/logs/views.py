@@ -8,4 +8,4 @@ from .serializers import LogSerializer
 class LogViewSet(viewsets.ModelViewSet):
     serializer_class = LogSerializer
     queryset = Log.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
