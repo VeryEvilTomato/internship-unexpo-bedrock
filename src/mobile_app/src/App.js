@@ -1,33 +1,56 @@
 import React from 'react';
 
-import DeviceInfo from 'react-native-device-info';
-import Communications from 'react-native-communications';
+import LoginScreen from './components/login/LoginScreen'
+import SplashScreen from './components/login/SplashScreen'
+import MenuScreen from './components/home/MenuScreen'
+
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import {
-    Text,
-    View,
     Button,
-    StyleSheet,
-} from 'react-native';
+    Icon,
+    Text
+} from 'react-native-elements';
 
-const sendText = () => {
-    Communications.textWithoutEncoding("+584249384895", "Hola, esto fue enviado desde React Native mi amor.")
-}
+const Stack = createStackNavigator();
 
-const App: () => React$Node = () => {
+export default function App() {
+    let token = "Not null"
+
     return (
-        <View>
-            <Text>Titulo</Text>
-            <Button
-                title="Enviar"
-                onPress={sendText}
-            />
-        </View>
-    );
-};
-
-const styles = StyleSheet.create({
-
-});
-
-export default App;
+        <NavigationContainer>
+            <Stack.Navigator
+                screenOptions={{ headerShown: false ,}}
+            >
+                { 
+                    token == null ? (
+                            // Login screens
+                            <>
+                                <Stack.Screen
+                                    name="Login"
+                                    title="Error, this shouldn't be visible"
+                                    component={LoginScreen}
+                                />
+                                <Stack.Screen
+                                    name="Splash"
+                                    title="SplashScreen"
+                                    component={SplashScreen}
+                                />
+                            </>
+                        ) : (
+                            // Application screens
+                            <>
+                                <Stack.Screen
+                                    name="Home"
+                                    title="Menú princpal"
+                                    component={MenuScreen}
+                                />
+                            </>
+                        )
+                }
+            </Stack.Navigator>
+        </NavigationContainer>
+  );
+}
