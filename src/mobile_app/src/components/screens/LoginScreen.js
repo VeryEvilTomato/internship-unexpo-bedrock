@@ -1,8 +1,8 @@
 import React, { useReducer, useRef } from 'react';
 import { connect } from 'react-redux';
 
-import { INPUT } from '../../constants'
-import { authenticateUser } from '../../redux/actions'
+import { INPUT } from '@constants/input'
+import { authenticateUser } from '@redux/actions'
 
 import {
     Button,
@@ -38,8 +38,8 @@ function formHandler(action, formDispatch, navigation) {
     if(navigation.isFocused()) formDispatch(action);
 }
 
-function submitForm(navigationProp, formData, formDispatch, reduxDispatch) {
-    reduxDispatch(authenticateUser(formData));
+function submitForm(navigationProp, request, formData, formDispatch, reduxDispatch) {
+    reduxDispatch(authenticateUser(formData, request));
 }
 
 const LoginScreenComponent = ({request, dispatch, navigation}) => {
@@ -86,6 +86,7 @@ const LoginScreenComponent = ({request, dispatch, navigation}) => {
                 title="Iniciar sesión"
                 onPress={() => submitForm(
                     navigation, 
+                    request,
                     formState, 
                     formDispatch,
                     dispatch,

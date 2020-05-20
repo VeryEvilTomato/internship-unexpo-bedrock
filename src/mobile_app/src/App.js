@@ -30,7 +30,8 @@ const store = createStore(
         request: {
             isFetching: false,
             didInvalidate: false,
-            user_id: null,
+            userId: null,
+            baseURL: 'http://192.168.0.108:8000/api',
             token: {
                 access: null,
                 refresh: null,

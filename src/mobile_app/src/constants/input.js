@@ -8,10 +8,3 @@ export const INPUT = {
     SET: 'INPUT_SET',
     ERROR: 'INPUT_ERROR',
 }
-
-
-// API URLs
-
-export const URL = {
-    BASE: '',
-}

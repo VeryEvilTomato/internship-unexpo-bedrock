@@ -21,14 +21,14 @@ const requestReducers = (state = {}, action) => {
             return {
                 ...state, 
                 isFetching: false,
-                token: null,
+                token: { access: null, refresh: null },
                 didInvalidate: true,
             }
         case actions.DECODE_JWT:
             let { user_id } = jwtDecode(state.token.access);
             return {
                 ...state,
-                user_id,
+                userId: user_id,
             }
         default:
             return state;

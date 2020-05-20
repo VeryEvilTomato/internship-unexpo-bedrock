@@ -22,10 +22,6 @@ const receiveToken = (token) => {
 export const invalidateToken = () => {
     return {
         type: INVALIDATE_TOKEN,
-        token: {
-            access: null,
-            refresh: null,
-        },
     }
 }
 
@@ -35,12 +31,13 @@ export const decodeJWT = () => {
     }
 }
 
-export function authenticateUser(credentials) {
+export function authenticateUser(credentials, request) {
     return function (dispatch) {
         dispatch(requestToken());
 
+        const baseURL = request.baseURL;
         const api = axios.create({
-            baseURL: 'http://192.168.0.108:8000/api',
+            baseURL,
         })
 
         return api({
@@ -48,7 +45,9 @@ export function authenticateUser(credentials) {
             url: '/token/',
             data: credentials,
         }).then(function (response) {
-            return dispatch(receiveToken(response.data));
+            dispatch(receiveToken(response.data));
+        }).then(() => {
+            dispatch(decodeJWT())
         });
     }
 }

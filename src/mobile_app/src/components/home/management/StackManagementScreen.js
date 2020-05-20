@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { 
-    UserListScreen, 
+    UserManagementScreen, 
     UserFormScreen, 
 } from './screens/'
 
@@ -33,8 +33,8 @@ export function StackManagementScreen({navigation}) {
             }}
         >
             <Stack.Screen
-                component={UserListScreen}
-                name='UserList'
+                component={UserManagementScreen}
+                name='UserManagement'
                 options = {{ title: `Lista de usuarios`}}
             />
             <Stack.Screen

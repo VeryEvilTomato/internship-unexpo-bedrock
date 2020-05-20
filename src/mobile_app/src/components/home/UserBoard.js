@@ -13,12 +13,20 @@ import {
  * Active session user information componen
 */
 
-export default function UserBoard({ user_id }) {
+export default function UserBoard({ userData }) {
+    let { first_name, last_name, is_staff } = userData;
+
     useEffect(() => {}, [])
 
     return (
         <View>
-            <Text>ID de Usuario: {user_id}</Text>
+            <Text>¡Bienvenid@ {first_name} {last_name}!</Text>
+            {
+                is_staff ?
+                    ( <Text>Usted posee derechos de administrador</Text> )
+                    :
+                    ( <View></View> )
+            }
         </View>
     )
 }

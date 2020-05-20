@@ -25,6 +25,9 @@ export default function UserProfile(props) {
                     )
                 }
             </View>
+            <Button 
+                title="Bloquear"
+            />
         </View>
     )
 }

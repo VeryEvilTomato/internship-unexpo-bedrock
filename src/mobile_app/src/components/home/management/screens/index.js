@@ -1,2 +1,2 @@
 export * from './UserFormScreen'
-export * from './UserListScreen'
+export * from './UserManagementScreen'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -15,8 +15,8 @@ import {
 
 import GateButton from '../GateButton';
 import UserBoard from '../UserBoard';
-
-import { decodeJWT } from '../../../redux/actions';
+import { decodeJWT, invalidateToken } from '@redux/actions';
+import { requestProfile } from '@api'
 
 const Drawer = createDrawerNavigator()
 
@@ -32,22 +32,43 @@ function navigationHandler(option, navigation) {
 }
 
 const HomeScreenComponent = ({request, dispatch, navigation}) => {
-    let { user_id } = request;
-    useEffect(() => { dispatch(decodeJWT()) }, []);
+    const { userId, baseURL, token } = request;
+    const [ userData, setUserData ] = useState({});
+    let profileData = null;
+
+    useEffect(() => {
+        if (userId) { 
+            requestProfile(
+                userId, 
+                baseURL, 
+                token
+            ).then((response) => {
+                setUserData(response.data);
+            }).catch((error) => {
+                dispatch(invalidateToken());
+            })
+        };
+    }, [userId])
 
     return (
         <View>
             {
-                (user_id === null) ? 
+                (userId === null) ? 
                     ( <Text>Cargando perfil...</Text> )
                     : 
-                    ( <UserBoard user_id={user_id}/> )
+                    ( <UserBoard userData={userData}/> )
             }
             <GateButton/>
-            <Button
-                title="Gestión de usuarios"
-                onPress={() => navigationHandler("USER_MANAGEMENT", navigation)}
-            />
+            {
+                (userData.is_staff) ? 
+                    (   <Button
+                            title="Gestión de usuarios"
+                            onPress={() => navigationHandler("USER_MANAGEMENT", navigation)}
+                        /> 
+                    )
+                    : 
+                    ( <View></View> )
+            }
             <Button
                 title="Opciones"
                 onPress={() => navigationHandler("OPTIONS", navigation)}
