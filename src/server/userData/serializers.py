@@ -3,19 +3,19 @@ from django.contrib.auth.models import User
 from userData.models import UserData
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     # Model User fields that get serialized
     class Meta:
         model = User
         fields = [
-            'username',
-            'first_name',
-            'last_name',
-            'is_staff',
-            'is_superuser',
-            'last_login',
-            'usersdata',
-            'nums',
+            "username",
+            "first_name",
+            "last_name",
+            "is_staff",
+            "is_superuser",
+            "last_login",
+            "usersdata",
+            "nums",
         ]
         depth = 1
 
@@ -29,13 +29,13 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     pass
 
 
-class UserDataSerializers (serializers.HyperlinkedModelSerializer):
+class UserDataSerializers(serializers.HyperlinkedModelSerializer):
     # Model UserData fields that get serialized
     class Meta:
         model = UserData
         fields = [
-            'accesLevel',
-            'locks',
-            'home',
-            'user',
+            "accesLevel",
+            "locks",
+            "home",
+            "user",
         ]
