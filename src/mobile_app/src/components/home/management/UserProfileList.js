@@ -9,6 +9,7 @@ import {
 import {
     View,
     ScrollView,
+    FlatList,
 } from 'react-native';
 
 import UserProfile from './UserProfile'
@@ -17,9 +18,10 @@ import { invalidateToken } from '@redux/actions';
 
 const UserProfileListComponent = ({request, dispatch}) => {
     const { baseURL, token } = request;
-    const [ userDataList, setUserDataList] = useState(null);
+    const [ userDataList, setUserDataList ] = useState([]);
 
     useEffect(() => {
+        setUserDataList([]);
         requestAllProfiles(
             baseURL, 
             token
@@ -31,21 +33,14 @@ const UserProfileListComponent = ({request, dispatch}) => {
     }, [])
 
     return (
-        <ScrollView>
-            <View>
-                {   
-                    userDataList === null ?
-                        <Text>Cargando lista de usuarios...</Text>
-                        :
-                        userDataList.map((profile, index) =>
-                            <UserProfile 
-                                profile={profile}
-                                key={index}
-                            />
-                        )
-                }
-            </View>
-        </ScrollView>
+        <View style={{ height: 500}}>
+            <FlatList
+                data={userDataList}
+                renderItem={({item}) => <UserProfile profile={item}/>}
+                keyExtractor={(item) => item.id}
+                extraData={userDataList}
+            />
+        </View>
     )
 }
 
