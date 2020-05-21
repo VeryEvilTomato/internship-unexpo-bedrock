@@ -34,7 +34,7 @@ class UserDataSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserData
         fields = [
-            "accesLevel",
+            "accessLevel",
             "locks",
             "home",
             "user",

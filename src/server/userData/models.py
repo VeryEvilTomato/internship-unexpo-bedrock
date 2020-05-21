@@ -15,12 +15,12 @@ class UserData(models.Model):
 
     ADMIN_LEVEL = "NA"
     NORMAL_LEVEL = "NU"
-    LIMIT_LEVEL = "NL"
+    LIMITED_LEVEL = "NL"
 
-    ACCES_LEVEL = [
+    ACCESS_LEVEL = [
         (ADMIN_LEVEL, "Administrador"),
         (NORMAL_LEVEL, "Normal"),
-        (LIMIT_LEVEL, "Limitado"),
+        (LIMITED_LEVEL, "Limitado"),
     ]
     """
     store information related to User, 
@@ -30,20 +30,21 @@ class UserData(models.Model):
     user = models.OneToOneField(
         User,
         null=True,
+        blank=False,
         on_delete=models.CASCADE,
         related_name="usersdata",
     )
-    # model that can choice access level
-    accesLevel = models.CharField(
+    # field that allows choosing level of access
+    accessLevel = models.CharField(
         max_length=3,
-        choices=ACCES_LEVEL,
+        choices=ACCESS_LEVEL,
         default=NORMAL_LEVEL,
         verbose_name="Nivel de acceso",
     )
-    # model that can select if the user is lock or not
+    # field that allows selecting if the user is blocked or not
     locks = models.BooleanField(
         null=False, default=False, verbose_name="Bloqueado")
-    # foreign key for relationship between home model and user model
+    # foreign key for a relationship between the home model and user model
     home = models.ForeignKey(
         UserHome,
         related_name="usersdata",
@@ -55,7 +56,7 @@ class UserData(models.Model):
 
     def __str__(self):
         return "Nivel= %s | Bloqueado= %s | Casa= %s" % (
-            self.accesLevel,
+            self.accessLevel,
             self.locks,
             self.home,
         )
