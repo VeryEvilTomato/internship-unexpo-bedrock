@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from userHome.models import UserHome
 
@@ -11,17 +12,20 @@ from userHome.models import UserHome
 
 class UserData(models.Model):
 
-    # Access Levels for users
+    class AccessLevel(models.TextChoices):
 
-    ADMIN_LEVEL = "NA"
-    NORMAL_LEVEL = "NU"
-    LIMITED_LEVEL = "NL"
+        ADMIN_LEVEL = 'AL', _('Administrador')
+        NORMAL_LEVEL = 'NL', _('Normal')
+        LIMITED_LEVEL = 'LL', _('Limitado')
 
-    ACCESS_LEVEL = [
-        (ADMIN_LEVEL, "Administrador"),
-        (NORMAL_LEVEL, "Normal"),
-        (LIMITED_LEVEL, "Limitado"),
-    ]
+        # field that allows choosing level of access
+    accessLevel = models.CharField(
+        max_length=3,
+        choices=AccessLevel.choices,
+        default=AccessLevel.NORMAL_LEVEL,
+        verbose_name="Nivel de acceso",
+    )
+
     """
     store information related to User, 
     using a OneToOneField to a model 
@@ -34,13 +38,7 @@ class UserData(models.Model):
         on_delete=models.CASCADE,
         related_name="usersdata",
     )
-    # field that allows choosing level of access
-    accessLevel = models.CharField(
-        max_length=3,
-        choices=ACCESS_LEVEL,
-        default=NORMAL_LEVEL,
-        verbose_name="Nivel de acceso",
-    )
+
     # field that allows selecting if the user is blocked or not
     locks = models.BooleanField(
         null=False, default=False, verbose_name="Bloqueado")
