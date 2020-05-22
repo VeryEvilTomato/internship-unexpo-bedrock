@@ -33,7 +33,7 @@ class UserData(models.Model):
     """
     user = models.OneToOneField(
         User,
-        null=True,
+        null=False,
         blank=False,
         on_delete=models.CASCADE,
         related_name="usersdata",
@@ -46,7 +46,7 @@ class UserData(models.Model):
     home = models.ForeignKey(
         UserHome,
         related_name="usersdata",
-        null=True,
+        null=False,
         blank=False,
         on_delete=models.CASCADE,
     )
