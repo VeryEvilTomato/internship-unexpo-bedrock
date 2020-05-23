@@ -9,7 +9,11 @@ class Number(models.Model):
     """
     number = models.CharField(max_length=10)
     user = models.ForeignKey(
-        User, related_name="nums", null=False, blank=False, on_delete=models.CASCADE
+        User,
+        related_name="nums",
+        null=False,
+        blank=False,
+        on_delete=models.CASCADE
     )
 
     class Meta:
