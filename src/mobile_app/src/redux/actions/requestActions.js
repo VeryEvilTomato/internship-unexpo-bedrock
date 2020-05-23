@@ -44,10 +44,13 @@ export function authenticateUser(credentials, request) {
             method: 'post',
             url: '/token/',
             data: credentials,
-        }).then(function (response) {
+        }).then((response) => {
             dispatch(receiveToken(response.data));
-        }).then(() => {
-            dispatch(decodeJWT())
+            return response.data;
+        }).then((token) => {
+            if(token.access) dispatch(decodeJWT())
+        }).catch((error) => {
+            dispatch(invalidateToken());
         });
     }
 }

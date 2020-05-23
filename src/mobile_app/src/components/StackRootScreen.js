@@ -63,7 +63,7 @@ let StackRoot = ({request}) => {
                                         name="DrawerHome"
                                         component={DrawerHomeScreen}
                                         options={{ 
-                                            title: `Menú principal`
+                                            title: `Bedrock`
                                         }}
                                     />
                                 </>

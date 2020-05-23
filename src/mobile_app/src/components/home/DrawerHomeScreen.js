@@ -3,9 +3,9 @@ import React from 'react';
 import { 
     HomeScreen, 
     SettingsScreen,
+    UserManagementScreen,
 } from './screens'
 
-import { StackManagementScreen } from './management/StackManagementScreen'
 
 import {
     Button,
@@ -27,9 +27,27 @@ const Drawer = createDrawerNavigator();
 export function DrawerHomeScreen({navigation}) {
     return (
         <Drawer.Navigator initialRoute="Home">
-            <Drawer.Screen name="Home" component={HomeScreen}/>
-            <Drawer.Screen name="Settings" component={SettingsScreen} />
-            <Drawer.Screen name="Management" component={StackManagementScreen} />
+            <Drawer.Screen 
+                name="Home" 
+                component={HomeScreen}
+                options={{ 
+                    title: `Menú principal`
+                }}
+            />
+            <Drawer.Screen 
+                name="UserManagement" 
+                component={UserManagementScreen}
+                options={{ 
+                    title: `Gestión de Usuarios`
+                }}
+            />
+            <Drawer.Screen 
+                name="Settings" 
+                component={SettingsScreen}
+                options={{ 
+                    title: `Opciones`
+                }}
+            />
         </Drawer.Navigator>
     )
 }
