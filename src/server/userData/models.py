@@ -11,6 +11,20 @@ from userHome.models import UserHome
 
 
 class UserData(models.Model):
+
+    class AccessLevel(models.TextChoices):
+
+        ADMIN_LEVEL = 'AL', _('Administrador')
+        NORMAL_LEVEL = 'NL', _('Normal')
+        LIMITED_LEVEL = 'LL', _('Limitado')
+
+    # field that allows choosing level of access
+    accessLevel = models.CharField(
+        max_length=3,
+        choices=AccessLevel.choices,
+        default=AccessLevel.NORMAL_LEVEL,
+        verbose_name="Nivel de acceso",
+    )
     """
     store information related to User,
     using a OneToOneField to a model
@@ -22,33 +36,23 @@ class UserData(models.Model):
         related_name="usersdata",
     )
 
-    # Field that allows choosing level of access
-    class AccessLevel(models.TextChoices):
-        ADMIN_LEVEL = 'AL', _('Administrador')
-        NORMAL_LEVEL = 'NL', _('Normal')
-        LIMITED_LEVEL = 'LL', _('Limitado')
-
-    accessLevel = models.CharField(
-        max_length=3,
-        choices=AccessLevel.choices,
-        default=AccessLevel.NORMAL_LEVEL,
-        verbose_name="Nivel de acceso",
-    )
-
-    # Field that allows selecting if the user is blocked or not
+    # field that allows selecting if the user is blocked or not
     locks = models.BooleanField(
-        default=False,
+        null=False,
+        blank=False,
         verbose_name="Bloqueado"
     )
 
-    # Foreign key for a relationship between the home model and user model
+    # foreign key for a relationship between the home model and user model
     home = models.ForeignKey(
         UserHome,
+        null=False,
+        blank=False,
         related_name="usersdata",
         on_delete=models.CASCADE,
     )
 
-    # Converts data to a string
+    # converts data to a string
     def __str__(self):
         return "Nivel= %s | Bloqueado= %s | Casa= %s" % (
             self.accessLevel,
