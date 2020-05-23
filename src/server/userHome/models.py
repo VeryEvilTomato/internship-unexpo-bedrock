@@ -9,13 +9,19 @@ from django.db import models
 class UserHome(models.Model):
 
     residenceName = models.CharField(
-        max_length=30, null=True, blank=True, verbose_name="Nombre de residencia"
+        max_length=30,
+        default="Error",
+        verbose_name="Nombre de residencia"
     )
     streetBlockNumber = models.CharField(
-        max_length=10, null=True, blank=False, verbose_name="Numero de manzana"
+        max_length=10,
+        default="Error",
+        verbose_name="Numero de manzana"
     )
     homeNumber = models.CharField(
-        max_length=4, null=True, blank=False, verbose_name="Numero de casa"
+        max_length=4,
+        default="Error",
+        verbose_name="Numero de casa"
     )
 
     def __str__(self):
