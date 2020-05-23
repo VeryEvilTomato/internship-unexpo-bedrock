@@ -1,8 +1,5 @@
-import React, { useReducer, useRef } from 'react';
+import React, { useReducer, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-
-import { INPUT } from '@constants/input'
-import { authenticateUser } from '@redux/actions'
 
 import {
     Button,
@@ -15,82 +12,35 @@ import {
     View,
 } from 'react-native';
 
-function formInit( 
-    defaultData = {
-        username: '',
-        password: '',
-    }) {
-    return defaultData;
-}
+import { FORM_INIT, PROPS_CREDENTIALS } from '@constants'
+import { authenticateUser } from '@redux/actions'
 
-function formReducer(state, action) {
-    switch(action.type) {
-        case INPUT.USER:
-            return {...state, username: action.payload};
-        case INPUT.PASSWORD:
-            return {...state, password: action.payload};
-        case INPUT.RESET:
-            return formInit();
-    }
-}
-
-function formHandler(action, formDispatch, navigation) {
-    if(navigation.isFocused()) formDispatch(action);
-}
-
-function submitForm(navigationProp, request, formData, formDispatch, reduxDispatch) {
-    reduxDispatch(authenticateUser(formData, request));
+function submitForm(request, formState, reduxDispatch) {
+    reduxDispatch(authenticateUser(formState, request));
 }
 
 const LoginScreenComponent = ({request, dispatch, navigation}) => {
-    const [formState, formDispatch] = useReducer(formReducer, formInit())
-
-    if(request.isLoading) navigation.navigate('Splash');
+    const [formState, setFormState] = useState(FORM_INIT.CREDENTIALS); 
 
     return (
         <View>
             <Input
-                placeholder='Usuario'
-                value={formState.user}
-                autoCorrect={false}
+                value={formState.username}
                 onChangeText = {(text) => { 
-                    formHandler(
-                        {
-                            type: INPUT.USER, 
-                            payload: text
-                        },
-                        formDispatch,
-                        navigation
-                )}}
-                maxLength={15}
-                leftIcon={{ type: 'material', name: 'face' }}
+                    setFormState({...formState, username: text}) 
+                }}
+                {...PROPS_CREDENTIALS.USERNAME}
             />
             <Input
-                placeholder='Contraseña'
                 value={formState.password}
-                secureTextEntry={true}
-                autoCorrect={false}
                 onChangeText = {(text) => { 
-                    formHandler(
-                        {
-                            type: INPUT.PASSWORD, 
-                            payload: text
-                        },
-                        formDispatch,
-                        navigation
-                )}}
-                maxLength={30}
-                leftIcon={{ type: 'material', name: 'lock' }}
+                    setFormState({...formState, password: text}) 
+                }}
+                {...PROPS_CREDENTIALS.PASSWORD}
             />
             <Button
                 title="Iniciar sesión"
-                onPress={() => submitForm(
-                    navigation, 
-                    request,
-                    formState, 
-                    formDispatch,
-                    dispatch,
-                )}
+                onPress={() => submitForm(request, formState, dispatch)}
             />
         </View>
     );

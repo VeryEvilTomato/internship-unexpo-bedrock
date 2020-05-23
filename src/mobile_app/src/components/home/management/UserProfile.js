@@ -14,7 +14,6 @@ export default function UserProfile(props) {
     return (
         <View style={{backgroundColor: "#cfe0ff", marginTop: 5}}>
             <Text>Nombre: {profile.first_name} {profile.last_name}</Text>
-            <Text>Estado: Activo</Text>
             <View>
                 <Text>Numeros:</Text>
                 {

@@ -8,21 +8,40 @@ import {
 
 import {
     View,
+    Alert,
 } from 'react-native';
 
 import { invalidateToken } from '@redux/actions';
+import { OverlayModal } from '@containers';
 
-const SettingsScreenComponent = ({request, dispatch, navigation}) => {
+const SettingsScreenComponent = ({request, dispatch}) => {
     return (
         <View>
             <Text>Opciones</Text>
             <Button
                 title="Cambiar contraseña"
-                onPress={() => navigation.navigate("PasswordReset")}
             />
             <Button
                 title="Cerrar sesión"
-                onPress={() => dispatch(invalidateToken())}
+                onPress={
+                    () => { 
+                        Alert.alert(
+                            "Advertencia",
+                            "¿Desea abandonar sesión?",
+                            [
+                                {
+                                    text: "Cancelar",
+                                    onPress: () => {},
+                                },
+                                {
+                                    text: "Aceptar",
+                                    onPress: () => { dispatch(invalidateToken())},
+                                },
+
+                            ]
+                        )
+                    }
+                }
             />
         </View>
     )

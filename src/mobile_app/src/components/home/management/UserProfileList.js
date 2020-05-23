@@ -34,10 +34,15 @@ const UserProfileListComponent = ({request, dispatch}) => {
 
     return (
         <View style={{ height: 500}}>
+            { (userDataList.length > 0) ? 
+                <View></View> 
+                : 
+                <Text>Cargando...</Text> 
+            }
             <FlatList
                 data={userDataList}
                 renderItem={({item}) => <UserProfile profile={item}/>}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 extraData={userDataList}
             />
         </View>

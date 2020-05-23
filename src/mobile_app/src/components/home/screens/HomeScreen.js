@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import {
     Button,
     Text,
+    Divider,
 } from 'react-native-elements';
 
 import {
@@ -19,17 +20,6 @@ import { decodeJWT, invalidateToken } from '@redux/actions';
 import { requestProfile } from '@api'
 
 const Drawer = createDrawerNavigator()
-
-function navigationHandler(option, navigation) {
-    switch (option) {
-        case "USER_MANAGEMENT":
-            navigation.navigate("Management");
-            break;
-        case "OPTIONS":
-            navigation.navigate("Settings");
-            break;
-    }
-}
 
 const HomeScreenComponent = ({request, dispatch, navigation}) => {
     const { userId, baseURL, token } = request;
@@ -59,11 +49,12 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
                     ( <UserBoard userData={userData}/> )
             }
             <GateButton/>
+            <Divider/>
             {
                 (userData.is_staff) ? 
                     (   <Button
                             title="Gestión de usuarios"
-                            onPress={() => navigationHandler("USER_MANAGEMENT", navigation)}
+                            onPress={() => navigation.navigate(`UserManagement`)}
                         /> 
                     )
                     : 
@@ -71,7 +62,7 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
             }
             <Button
                 title="Opciones"
-                onPress={() => navigationHandler("OPTIONS", navigation)}
+                onPress={() => navigation.navigate(`Settings`)}
             />
         </View>
     )
