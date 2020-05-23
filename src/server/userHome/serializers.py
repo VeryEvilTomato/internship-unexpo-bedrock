@@ -10,4 +10,5 @@ class UserHomeSerializer(serializers.ModelSerializer):
             "residenceName",
             "streetBlockNumber",
             "homeNumber",
+            "usersdata",
         ]
