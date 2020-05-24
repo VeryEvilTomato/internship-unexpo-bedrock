@@ -19,7 +19,6 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from userData.views import UserViewSet, UserDataViewSet
 from userData.serializers import ChangePasswordSerializer
-from userHome.views import UserHomeViewSet
 from nums.views import NumberViewSet
 from logs.views import LogViewSet
 from rest_framework_simplejwt.views import (
@@ -29,7 +28,6 @@ from rest_framework_simplejwt.views import (
 )
 
 router = DefaultRouter()
-router.register(r'homes', UserHomeViewSet)
 router.register(r'users', UserViewSet)
 router.register(r'usersdata', UserDataViewSet)
 router.register(r'nums', NumberViewSet)

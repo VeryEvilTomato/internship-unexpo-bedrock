@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "logs",
     "nums",
     "userData",
-    "userHome",
     "rest_framework",
     "rest_framework_simplejwt",
 ]

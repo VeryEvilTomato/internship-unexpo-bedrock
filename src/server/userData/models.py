@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
-from userHome.models import UserHome
 
 # Create your models here.
 
@@ -18,7 +17,7 @@ class UserData(models.Model):
         NORMAL_LEVEL = 'NL', _('Normal')
         LIMITED_LEVEL = 'LL', _('Limitado')
 
-    # field that allows choosing level of access
+    # Field that allows choosing level of access
     accessLevel = models.CharField(
         max_length=3,
         choices=AccessLevel.choices,
@@ -26,7 +25,7 @@ class UserData(models.Model):
         verbose_name="Nivel de acceso",
     )
     """
-    store information related to User,
+    Store information related to User,
     using a OneToOneField to a model
     containing the fields for additional information
     """
@@ -35,27 +34,57 @@ class UserData(models.Model):
         on_delete=models.CASCADE,
         related_name="usersdata",
     )
-
-    # field that allows selecting if the user is blocked or not
+    # Field that allows selecting if the user is blocked or not
     locks = models.BooleanField(
-        null=False,
-        blank=False,
         verbose_name="Bloqueado"
     )
 
-    # foreign key for a relationship between the home model and user model
-    home = models.ForeignKey(
-        UserHome,
-        null=False,
-        blank=False,
-        related_name="usersdata",
-        on_delete=models.CASCADE,
+    # Foreign key for a relationship between the home model and user model
+    # home = models.ForeignKey(
+    #     UserHome,
+    #
+    #
+    #     related_name="usersdata",
+    #     on_delete=models.CASCADE,
+    # )
+
+    # Home data
+    residenceName = models.CharField(
+        max_length=30,
+        verbose_name="Nombre de residencia"
+    )
+    streetBlockNumber = models.CharField(
+        max_length=10,
+        verbose_name="Numero de manzana"
+    )
+    homeNumber = models.CharField(
+        max_length=4,
+        verbose_name="Numero de casa"
+    )
+
+    # Cars data
+    enrollment = models.CharField(
+        max_length=8,
+        verbose_name="Matrícula"
+    )
+    brandModel = models.CharField(
+        max_length=35,
+        verbose_name="Marca y modelo del carro"
+    )
+    color = models.CharField(
+        max_length=15,
+        verbose_name="Color del carro"
     )
 
     # converts data to a string
     def __str__(self):
-        return "Nivel= %s | Bloqueado= %s | Casa= %s" % (
+        return "Nivel= %s | Bloqueado= %s | Residencia= %s | Manzana= %s | Casa= %s | Matricula= %s | Marca y Modelo= %s | Color= %s" % (
             self.accessLevel,
             self.locks,
-            self.home,
+            self.residenceName,
+            self.streetBlockNumber,
+            self.homeNumber,
+            self.enrollment,
+            self.brandModel,
+            self.color,
         )
