@@ -36,4 +36,10 @@ class UserDataSerializers(serializers.ModelSerializer):
             "accessLevel",
             "locks",
             "user",
+            "residenceName",
+            "streetBlockNumber",
+            "homeNumber",
+            "enrollment",
+            "brandModel",
+            "color",
         ]
