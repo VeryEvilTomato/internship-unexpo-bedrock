@@ -15,6 +15,7 @@ import { FORM_INIT, PROPS_NEW_USER } from '@constants'
 
 export const UserForm = ({toggleOverlay}) => {
     const [formState, setFormState] = useState(FORM_INIT.NEW_USER);
+    const [errorState, setErrorState] = useState([]);
 
     return (
         <ScrollView>
@@ -26,26 +27,6 @@ export const UserForm = ({toggleOverlay}) => {
             <Input
                 value={formState.last_name}
                 onChangeText = {(text) => { setFormState({ ...formState, last_name: text} )}}
-                {...PROPS_NEW_USER.BASE}
-            />
-            <Input
-                value={formState.residenceName}
-                onChangeText = {(text) => { setFormState({ ...formState, residenceName: text} )}}
-                {...PROPS_NEW_USER.BASE}
-            />
-            <Input
-                value={formState.homeNumber}
-                onChangeText = {(text) => { setFormState({ ...formState, homeNumber: text} )}}
-                {...PROPS_NEW_USER.BASE}
-            />
-            <Input
-                value={formState.streetBlockNumber}
-                onChangeText = {(text) => { setFormState({ ...formState, streetBlockNumber: text} )}}
-                {...PROPS_NEW_USER.BASE}
-            />
-            <Input
-                value={formState.phoneNumber}
-                onChangeText = {(text) => { setFormState({ ...formState, phoneNumber: text} )}}
                 {...PROPS_NEW_USER.BASE}
             />
             <Button

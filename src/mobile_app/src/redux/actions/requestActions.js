@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Alert from 'react-native';
 
 export const GET_TOKEN = "GET_TOKEN"
 export const RECEIVE_TOKEN = "RECEIVE_TOKEN"
@@ -51,6 +52,7 @@ export function authenticateUser(credentials, request) {
             if(token.access) dispatch(decodeJWT())
         }).catch((error) => {
             dispatch(invalidateToken());
+            alert("Credenciales inválidos, verifique el nombre de usuario y contraseña");
         });
     }
 }

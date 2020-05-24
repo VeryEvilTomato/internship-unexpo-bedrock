@@ -38,3 +38,10 @@ export const modifyProfile = (id, baseURL, token, data) => {
         }
     }))();
 }
+
+export async function createProfile(baseURL, token, data, setErrorState) {
+    const createUser = 0;
+    const createHome = 0;
+    const createNum = 0;
+    const createUserData = 0;
+}
