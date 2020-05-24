@@ -35,6 +35,5 @@ class UserDataSerializers(serializers.ModelSerializer):
         fields = [
             "accessLevel",
             "locks",
-            "home",
             "user",
         ]
