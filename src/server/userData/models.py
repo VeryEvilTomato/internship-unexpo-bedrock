@@ -65,6 +65,7 @@ class UserData(models.Model):
     # Cars data
     enrollment = models.CharField(
         max_length=8,
+        unique=True,
         verbose_name="Matrícula"
     )
     brandModel = models.CharField(

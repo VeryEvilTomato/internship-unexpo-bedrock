@@ -7,12 +7,15 @@ class Number(models.Model):
     """
     Database model for registered phone numbers
     """
-    number = models.CharField(max_length=10)
+    number = models.CharField(
+        max_length=11,
+        unique=True,
+        verbose_name="Numero de Telefono"
+    )
+
     user = models.ForeignKey(
         User,
         related_name="nums",
-        null=False,
-        blank=False,
         on_delete=models.CASCADE
     )
 
