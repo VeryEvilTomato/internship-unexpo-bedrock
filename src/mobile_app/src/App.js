@@ -1,33 +1,55 @@
 import React from 'react';
-
-import DeviceInfo from 'react-native-device-info';
-import Communications from 'react-native-communications';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunk from "redux-thunk";
 
 import {
-    Text,
-    View,
     Button,
-    StyleSheet,
-} from 'react-native';
+    Icon,
+    Text
+} from 'react-native-elements';
 
-const sendText = () => {
-    Communications.textWithoutEncoding("+584249384895", "Hola, esto fue enviado desde React Native mi amor.")
-}
+import StackRoot from './components/StackRootScreen'
+import rootReducer from './redux/reducers'
 
-const App: () => React$Node = () => {
+/*
+ * Starting point of the application
+ * - Store initialization
+ * - Middleware setup
+ * - Redux Tools setup
+*/
+
+const actionLogger = createLogger();
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+    rootReducer, 
+    // Preloaded state
+    {
+        request: {
+            isFetching: false,
+            didInvalidate: false,
+            userId: null,
+            baseURL: 'http://192.168.0.108:8000/api',
+            token: {
+                access: null,
+                refresh: null,
+            },
+        },
+    }, 
+    composeEnhancers(
+        applyMiddleware(
+            thunk,
+            actionLogger,
+        )
+    ),
+);
+
+export default function App() {
     return (
-        <View>
-            <Text>Titulo</Text>
-            <Button
-                title="Enviar"
-                onPress={sendText}
-            />
-        </View>
-    );
-};
-
-const styles = StyleSheet.create({
-
-});
-
-export default App;
+        <Provider store={store}>
+            <StackRoot/>
+        </Provider>
+  );
+}
