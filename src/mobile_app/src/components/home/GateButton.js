@@ -1,26 +1,17 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
-import {
-    Button,
-    Text,
-    Overlay,
-} from 'react-native-elements';
+import {Button, Text, Overlay} from 'react-native-elements';
 
-import {
-    View,
-} from 'react-native';
+import {View} from 'react-native';
 
 /*
  * Component to open up gate
-*/
+ */
 
 export default function GateButton() {
-    return (
-        <View>
-            <Button 
-                title="Encender"
-                onPress={() => alert("Abriendo portón")}
-            />
-        </View>
-    )
+  return (
+    <View>
+      <Button title="Encender" onPress={() => alert('Abriendo portón')} />
+    </View>
+  );
 }

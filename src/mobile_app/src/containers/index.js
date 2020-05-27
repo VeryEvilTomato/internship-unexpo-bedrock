@@ -1,1 +1,1 @@
-export * from './OverlayModal'
+export * from './OverlayModal';

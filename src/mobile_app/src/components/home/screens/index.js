@@ -1,3 +1,2 @@
-export * from './HomeScreen'
-export * from './SettingsScreen'
-export * from './UserManagementScreen'
+export * from './HomeScreen';
+export * from './SettingsScreen';

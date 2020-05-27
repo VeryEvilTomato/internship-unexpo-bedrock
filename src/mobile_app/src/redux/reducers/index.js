@@ -1,7 +1,8 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 
-import requestReducers from './requestReducers'
+import requestReducers from './requestReducers';
 
 export default combineReducers({
-    request: requestReducers,
-})
+  request: requestReducers,
+});
+

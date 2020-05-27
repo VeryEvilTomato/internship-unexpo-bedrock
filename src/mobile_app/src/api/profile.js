@@ -1,47 +1,72 @@
 import axios from 'axios';
-import { URL } from '@constants'
+import {URL} from '@constants';
+import {invalidateToken} from '@redux/actions';
+import {randomId, inputValidation} from '@utils';
+import {INPUT} from '@constants';
 
+export const requestProfile = async (id, baseURL, token, dispatch) => {
+  return axios({
+    method: 'get',
+    baseURL,
+    url: `${URL.USERS}/${id}/`,
+    responseType: 'json',
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+    },
+  })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch(invalidateToken());
+    });
+};
 
-export const requestProfile = (id, baseURL, token) => {
-    return (axios.create({
-        method: 'get',
-        baseURL,
-        url: `${URL.GET_USER}/${id}/`,
-        responseType: `json`,
-        headers: {
-            Authorization: `Bearer ${token.access}`
-        }
-    }))();
-}
+export const requestAllProfiles = (baseURL, token, dispatch) => {
+  return axios({
+    method: 'get',
+    baseURL,
+    url: `${URL.USERS}/`,
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+    },
+  })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch(invalidateToken());
+    });
+};
 
-export const requestAllProfiles = (baseURL, token) => {
-    return (axios.create({
-        method: 'get',
-        baseURL,
-        url: `${URL.GET_USER}/`,
-        responseType: `json`,
-        headers: {
-            Authorization: `Bearer ${token.access}`
-        }
-    }))();
-}
+export const createProfile = async (baseURL, token, data, dispatch) => {
+  const {first_name, last_name} = data;
+  data.username =
+    first_name.slice(0, 3).toLowerCase() +
+    last_name.slice(0, 3).toLowerCase() +
+    randomId(5);
 
-export const modifyProfile = (id, baseURL, token, data) => {
-    return (axios.create({
-        method: 'post',
-        baseURL,
-        url: `${URL.GET_USER}/${id}/`,
-        data,
-        responseType: `json`,
-        headers: {
-            Authorization: `Bearer ${token.access}`
-        }
-    }))();
-}
+  inputValidation([
+    {string: data.username, type: INPUT.USER},
+    {string: data.password, type: INPUT.PASSWORD},
+  ]);
 
-export async function createProfile(baseURL, token, data, setErrorState) {
-    const createUser = 0;
-    const createHome = 0;
-    const createNum = 0;
-    const createUserData = 0;
-}
+  return axios({
+    method: 'post',
+    baseURL,
+    url: `${URL.USERS}/`,
+    data,
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+    },
+  })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch(invalidateToken());
+    });
+};

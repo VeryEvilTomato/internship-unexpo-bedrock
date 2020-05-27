@@ -7,23 +7,28 @@ import {View} from 'react-native';
 
 import GateButton from '../GateButton';
 import UserBoard from '../UserBoard';
+import {invalidateToken} from '@redux/actions';
 import {requestProfile} from '@api';
 import {FORM_INIT} from '@constants';
 
 const HomeScreenComponent = ({request, dispatch, navigation}) => {
-  const {userId, baseURL, token} = request;
   const [user, setUser] = useState({
     ...FORM_INIT.USER,
     usersdata: FORM_INIT.USER_DATA,
   });
 
   useEffect(() => {
-    if (userId && navigation.isFocused()) {
-      requestProfile(userId, baseURL, token, dispatch).then(response => {
-        setUser(response.data);
-      });
+    if (request.userId) {
+      requestProfile(request.userId, request.baseURL, request.token)
+        .then(response => {
+          setUser(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          dispatch(invalidateToken());
+        });
     }
-  }, [baseURL, dispatch, token, userId, navigation]);
+  }, [dispatch, request.baseURL, request.token, request.userId]);
 
   return (
     <View>
