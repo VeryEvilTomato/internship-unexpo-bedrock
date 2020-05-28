@@ -13,12 +13,12 @@ const UserProfileListComponent = ({request, dispatch, navigation}) => {
   const [userDataList, setUserDataList] = useState([]);
 
   useEffect(() => {
-    if (navigation.isFocused()) {
-      setUserDataList([]);
+    const unsubscribe = navigation.addListener('focus', e => {
       requestAllProfiles(baseURL, token).then(response => {
         setUserDataList(response.data.results);
       });
-    }
+    });
+    return unsubscribe;
   }, [baseURL, dispatch, navigation, token]);
 
   return (
@@ -26,7 +26,9 @@ const UserProfileListComponent = ({request, dispatch, navigation}) => {
       {userDataList.length > 0 ? <View /> : <Text>Cargando...</Text>}
       <FlatList
         data={userDataList}
-        renderItem={({item}) => <UserProfile profile={item} />}
+        renderItem={({item}) => (
+          <UserProfile profile={item} navigation={navigation} />
+        )}
         keyExtractor={item => item.id.toString()}
         extraData={userDataList}
       />

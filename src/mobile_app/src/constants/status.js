@@ -1,0 +1,4 @@
+export const STATUS = {
+  ERROR: 'STATUS_ERROR',
+  SUCCESS: 'STATUS_SUCCESS',
+};
