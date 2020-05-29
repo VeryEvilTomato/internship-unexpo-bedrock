@@ -1,25 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {connect} from 'react-redux';
-
 import {Text} from 'react-native-elements';
-
 import {View, FlatList} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 import UserProfile from './UserProfile';
 import {requestAllProfiles} from '@api';
 
-const UserProfileListComponent = ({request, dispatch, navigation}) => {
+/*
+ * List displaying each profile included
+ * in the system.
+ */
+
+const UserProfileListComponent = ({request, navigation}) => {
   const {baseURL, token} = request;
   const [userDataList, setUserDataList] = useState([]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', e => {
+  useFocusEffect(
+    useCallback(() => {
       requestAllProfiles(baseURL, token).then(response => {
         setUserDataList(response.data.results);
       });
-    });
-    return unsubscribe;
-  }, [baseURL, dispatch, navigation, token]);
+    }, [baseURL, token]),
+  );
 
   return (
     <View style={{height: 500}}>

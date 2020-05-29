@@ -4,6 +4,10 @@ import {Button, Text} from 'react-native-elements';
 
 import {View} from 'react-native';
 
+/*
+ * Basic user information display.
+ */
+
 export default function UserProfile({profile, navigation}) {
   return (
     <View
@@ -32,7 +36,10 @@ export default function UserProfile({profile, navigation}) {
       <Button
         title="Perfil"
         onPress={() => {
-          navigation.navigate('UserDetail', profile);
+          navigation.navigate('UserDetail', {
+            ...profile,
+            recentlyCreated: false,
+          });
         }}
       />
     </View>

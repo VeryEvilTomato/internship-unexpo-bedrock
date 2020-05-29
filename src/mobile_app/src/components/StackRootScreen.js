@@ -8,8 +8,6 @@ import {DrawerHomeScreen} from './home/DrawerHomeScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {Button, Icon, Text} from 'react-native-elements';
-
 const Stack = createStackNavigator();
 
 /*
@@ -27,7 +25,8 @@ let StackRoot = ({request}) => {
           headerTitleAlign: 'center',
         }}>
         {/*
-         * If no JWT token is registered, login screen displays
+         * If no JWT token is registered, login screen displays,
+         * else home screen will display.
          */
         request.token.access === null ? (
           <>

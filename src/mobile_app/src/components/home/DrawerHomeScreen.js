@@ -6,7 +6,10 @@ import {StackUserManagementScreen} from './management/StackUserManagementScreen'
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 /*
- * Drawer Navigation setup for home menu
+ * Drawer Navigation setup for home menu,
+ * where depending of your access level
+ * you'll find access to the system
+ * functionality
  */
 
 const Drawer = createDrawerNavigator();

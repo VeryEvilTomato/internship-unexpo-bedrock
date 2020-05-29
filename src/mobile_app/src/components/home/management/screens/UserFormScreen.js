@@ -12,7 +12,10 @@ function submitHandler(formState, baseURL, token, dispatch, navigation) {
     .then(response => {
       switch (response.status) {
         case STATUS.SUCCESS:
-          navigation.navigate('UserDetail', response.data);
+          navigation.navigate('UserDetail', {
+            ...response.data,
+            recentlyCreated: true,
+          });
           break;
         case STATUS.ERROR:
           alert(JSON.stringify(response.data)); // DEBUG
