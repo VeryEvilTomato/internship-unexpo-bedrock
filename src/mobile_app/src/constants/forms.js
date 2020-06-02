@@ -12,9 +12,12 @@ export const FORM_INIT = {
   USER: {
     first_name: '',
     last_name: '',
+    nums: [],
+    usersdata: null,
   },
   USER_DATA: {
-    accessLevel: '',
+    accessLevel: 'NL',
+    locks: false,
     residenceName: '',
     streetBlockNumber: '',
     houseNumber: '',

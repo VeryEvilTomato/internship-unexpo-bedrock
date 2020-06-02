@@ -23,7 +23,7 @@ export const requestProfile = async (id, baseURL, token, dispatch) => {
     });
 };
 
-export const requestAllProfiles = (baseURL, token, dispatch) => {
+export const requestAllProfiles = async (baseURL, token, dispatch) => {
   return axios({
     method: 'get',
     baseURL,

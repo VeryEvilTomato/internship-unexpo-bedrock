@@ -13,7 +13,12 @@ function submitForm(request, formState, reduxDispatch) {
 }
 
 const LoginScreenComponent = ({request, dispatch}) => {
-  const [formState, setFormState] = useState(FORM_INIT.CREDENTIALS);
+  // Debug
+  const [formState, setFormState] = useState({
+    username: 'orlando',
+    password: '88905django',
+  });
+  // const [formState, setFormState] = useState(FORM_INIT.CREDENTIALS);
 
   return (
     <View>

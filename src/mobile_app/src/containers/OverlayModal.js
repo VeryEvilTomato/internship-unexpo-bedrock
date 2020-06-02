@@ -17,9 +17,9 @@ export const OverlayModal = ({buttonText, Component, styles, props}) => {
         onBackdropPress={toggleOverlay}
         overlayStyle={{
           width: '90%',
-          height: '90%',
+          height: 500,
         }}>
-        <Component toggleOverlay={toggleOverlay} />
+        <Component toggleOverlay={toggleOverlay} {...props} />
       </Overlay>
     </View>
   );
