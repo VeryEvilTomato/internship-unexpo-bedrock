@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status, generics
-from rest_framework import permissions
+from rest_framework import viewsets, status, generics, permissions
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from django.contrib.auth.models import User
-from userData.serializers import UserSerializer, UserDataSerializers, ChangePasswordSerializer
+from userData.serializers import UserSerializer, UserDataSerializers
 from userData.models import UserData
 # Create your views here.
 
@@ -15,6 +15,17 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+    @action(detail=True, methods=['put'], name='change Password', permission_classes=[permissions.IsAuthenticated])
+    def set_password(self, request, pk=None):
+        user = self.get_object()
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user.set_password(serializer.data['password'])
+            user.save()
+            return Response({'status': 'contraseña cambiada'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_permissions(self):
         """

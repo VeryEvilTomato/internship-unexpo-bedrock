@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "userData",
     "rest_framework",
     "rest_framework_simplejwt",
+    # "channels",
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,7 @@ TEMPLATES = [
     },
 ]
 
+# ASGI_APPLICATION = "settings.routing.aplication"
 WSGI_APPLICATION = "settings.wsgi.application"
 
 
@@ -96,7 +98,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        'OPTIONS': {
+            'min_length': 9,
+        }
+    },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]

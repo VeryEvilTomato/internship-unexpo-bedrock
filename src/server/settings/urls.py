@@ -18,7 +18,6 @@ from django.contrib.auth.models import User
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from userData.views import UserViewSet, UserDataViewSet
-from userData.serializers import ChangePasswordSerializer
 from nums.views import NumberViewSet
 from logs.views import LogViewSet
 from rest_framework_simplejwt.views import (

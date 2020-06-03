@@ -1,11 +1,19 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, password_validation
 from userData.models import UserData
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(
+        write_only=True,
+        min_length=10,
+        max_length=20
+    )
+    username = serializers.CharField(
+        min_length=5,
+        max_length=10
+    )
 
     def create(self, validated_data):
         user = get_user_model().objects.create_user(
@@ -31,15 +39,6 @@ class UserSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class ChangePasswordSerializer(serializers.ModelSerializer):
-    model = User
-    # Serializer for password change endpoint
-    # To-Do / in construction !!!
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
-    pass
-
-
 class UserDataSerializers(serializers.ModelSerializer):
     # Model UserData fields that get serialized
     class Meta:
@@ -55,3 +54,17 @@ class UserDataSerializers(serializers.ModelSerializer):
             "brandModel",
             "color",
         ]
+
+
+# class PasswordSerializer(serializers.ModelSerializer):
+#     old_password = serializers.CharField(
+#         write_only=True, required=True, max_length=15)
+#     new_password1 = serializers.CharField(
+#         write_only=True, required=True, max_length=15)
+#     new_password2 = serializers.CharField(
+#         write_only=True, required=True, max_length=15)
+
+#     def check_old_password(self, value):
+#         user = self.context['request'].user
+#         if not user
+#     pass
