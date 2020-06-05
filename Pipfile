@@ -13,6 +13,7 @@ djangorestframework = "*"
 channels-redis = "*"
 djangorestframework-simplejwt = "*"
 paho-mqtt = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

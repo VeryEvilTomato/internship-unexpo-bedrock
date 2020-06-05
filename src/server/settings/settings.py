@@ -86,7 +86,14 @@ WSGI_APPLICATION = "settings.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
+        # Esto es para PostgreSQL que todavia estoy haciendo pruebas.
+        # "ENGINE": "django.db.backends.postgresql_psycopg2",
+        # "NAME": 'RPI',
+        # 'USER': 'pi',
+        # 'PASSWORD': 'gabo_2496',
+        # 'HOST': '192.168.1.102',
+        # 'DATABASE_PORT': '5432',
     }
 }
 
