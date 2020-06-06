@@ -23,6 +23,7 @@ const requestReducers = (state = {}, action) => {
         isFetching: false,
         token: {access: null, refresh: null},
         didInvalidate: true,
+        userId: null,
       };
     case actions.DECODE_JWT:
       let {user_id} = jwtDecode(state.token.access);

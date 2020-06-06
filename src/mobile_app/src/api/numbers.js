@@ -99,7 +99,7 @@ export const updateNumber = async (id, baseURL, token, data, dispatch) => {
 
 export const deleteNumber = async (id, baseURL, token, dispatch) => {
   return axios({
-    method: 'del',
+    method: 'delete',
     baseURL,
     url: `${URL.NUMS}/${id}/`,
     responseType: 'json',

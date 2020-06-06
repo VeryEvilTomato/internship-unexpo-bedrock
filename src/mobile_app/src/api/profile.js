@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import axios from 'axios';
 import {URL} from '@constants';
 import {invalidateToken} from '@redux/actions';
@@ -90,4 +91,29 @@ export const createProfile = async (baseURL, token, data, dispatch) => {
         dispatch(invalidateToken());
       });
   }
+};
+
+export const deleteProfile = async (id, baseURL, token, dispatch) => {
+  return axios({
+    method: 'delete',
+    baseURL,
+    url: `${URL.USERS}/${id}/`,
+    responseType: 'json',
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+    },
+  })
+    .then(response => {
+      Alert.alert('', 'Perfil eliminado del sistema.', [
+        {
+          text: 'Continuar',
+          onPress: () => {},
+        },
+      ]);
+      return response;
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch(invalidateToken());
+    });
 };
