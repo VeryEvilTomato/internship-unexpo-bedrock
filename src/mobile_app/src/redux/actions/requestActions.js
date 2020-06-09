@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {retrieveStorageTokens} from '@utils/asyncStorage';
 
 export const GET_TOKEN = 'GET_TOKEN';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
@@ -11,7 +12,7 @@ const requestToken = () => {
   };
 };
 
-const receiveToken = token => {
+export const receiveToken = token => {
   return {
     type: RECEIVE_TOKEN,
     token,
@@ -31,7 +32,7 @@ export const decodeJWT = () => {
 };
 
 export function authenticateUser(credentials, request) {
-  return function(dispatch) {
+  return async dispatch => {
     dispatch(requestToken());
 
     const baseURL = request.baseURL;
@@ -51,6 +52,7 @@ export function authenticateUser(credentials, request) {
       .then(token => {
         if (token.access) {
           dispatch(decodeJWT());
+          return token;
         }
       })
       .catch(error => {
@@ -62,25 +64,33 @@ export function authenticateUser(credentials, request) {
   };
 }
 
-export function invalidateJWT(credentials, request) {
-  return function(dispatch) {
-    dispatch(requestToken());
-
+export function invalidateJWT(request) {
+  return async dispatch => {
+    const token = retrieveStorageTokens();
     const baseURL = request.baseURL;
     const api = axios.create({
       baseURL,
     });
 
+    if (token === null) {
+      dispatch(invalidateToken());
+      return null;
+    }
+
     return api({
       method: 'post',
-      url: '/token/',
-      data: credentials,
+      url: '/token/refresh',
+      data: token.refresh,
     })
       .then(response => {
         dispatch(receiveToken(response.data));
         return response.data;
       })
-      .then(token => {})
+      .then(responseToken => {
+        if (responseToken.access) {
+          dispatch(decodeJWT());
+        }
+      })
       .catch(error => {
         dispatch(invalidateToken());
         alert(

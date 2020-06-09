@@ -1,4 +1,5 @@
 import * as actions from '../actions';
+import {clearStorageTokens} from '@utils/asyncStorage';
 
 var jwtDecode = require('jwt-decode');
 
@@ -18,6 +19,7 @@ const requestReducers = (state = {}, action) => {
         token: action.token,
       };
     case actions.INVALIDATE_TOKEN:
+      clearStorageTokens();
       return {
         ...state,
         isFetching: false,

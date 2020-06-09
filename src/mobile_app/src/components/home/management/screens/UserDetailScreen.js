@@ -5,7 +5,7 @@ import {Text, Button, Divider} from 'react-native-elements';
 import {View, BackHandler, Alert} from 'react-native';
 
 import {FORM_INIT} from '@constants';
-import {requestProfile, deleteNumber, deleteProfile} from '@api';
+import {funnel} from '@api';
 import {accessLevelToText} from '@utils';
 import {OverlayModal} from '@containers';
 import UserDataEditor from '../UserDataEditor';
@@ -21,7 +21,7 @@ const UserDetailScreenComponent = ({
   navigation,
   route: {params},
 }) => {
-  const {baseURL, token} = request;
+  const {baseURL, token, mode} = request;
   const {id} = params;
   const [userState, setUserState] = useState(FORM_INIT.USER);
   const [isUpdatingDetail, setIsUpdatingDetail] = useState(true);
@@ -46,7 +46,8 @@ const UserDetailScreenComponent = ({
   useFocusEffect(
     useCallback(() => {
       if (isUpdatingDetail) {
-        requestProfile(id, baseURL, token, dispatch)
+        funnel(mode)
+          .requestProfile(id, baseURL, token, dispatch)
           .then(response => {
             // Set user information & numbers
             setUserState(response.data);
@@ -56,7 +57,7 @@ const UserDetailScreenComponent = ({
             console.log(error);
           });
       }
-    }, [isUpdatingDetail, id, baseURL, token, dispatch]),
+    }, [isUpdatingDetail, mode, id, baseURL, token, dispatch]),
   );
   return (
     <View>
@@ -121,6 +122,7 @@ const UserDetailScreenComponent = ({
                       token,
                       dispatch,
                       setIsUpdatingDetail,
+                      mode,
                     );
                   }}
                 />
@@ -144,7 +146,7 @@ const UserDetailScreenComponent = ({
       <Button
         title="Eliminar perfil"
         onPress={() => {
-          ProfileDeleteHandler(id, baseURL, token, dispatch, navigation);
+          ProfileDeleteHandler(id, baseURL, token, dispatch, navigation, mode);
         }}
       />
     </View>
@@ -157,7 +159,14 @@ export const UserDetailScreen = connect(state => state)(
 
 // Handlers
 
-function ProfileDeleteHandler(userId, baseURL, token, dispatch, navigation) {
+function ProfileDeleteHandler(
+  userId,
+  baseURL,
+  token,
+  dispatch,
+  navigation,
+  mode,
+) {
   Alert.alert(
     'Advertencia',
     'Esta acción es irrecuperable ¿Seguro que de sea eliminar el perfil?',
@@ -165,9 +174,11 @@ function ProfileDeleteHandler(userId, baseURL, token, dispatch, navigation) {
       {
         text: 'Aceptar',
         onPress: () => {
-          deleteProfile(userId, baseURL, token, dispatch).then(response => {
-            navigation.navigate('UserList');
-          });
+          funnel(mode)
+            .deleteProfile(userId, baseURL, token, dispatch)
+            .then(response => {
+              navigation.navigate('UserList');
+            });
         },
       },
       {text: 'Cancelar', onPress: () => {}},
@@ -181,14 +192,17 @@ function numberDeleteHandler(
   token,
   dispatch,
   setIsUpdatingDetail,
+  mode,
 ) {
   Alert.alert('Advertencia', '¿Seguro que desea eliminar el número?', [
     {
       text: 'Aceptar',
       onPress: () => {
-        deleteNumber(numberId, baseURL, token, dispatch).then(response => {
-          setIsUpdatingDetail(true);
-        });
+        funnel(mode)
+          .deleteNumber(numberId, baseURL, token, dispatch)
+          .then(response => {
+            setIsUpdatingDetail(true);
+          });
       },
     },
     {text: 'Regresar', onPress: () => {}},

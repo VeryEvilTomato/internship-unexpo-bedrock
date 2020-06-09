@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Button, Text, Input} from 'react-native-elements';
-import {View, FlatList, Alert} from 'react-native';
+import {View, Alert} from 'react-native';
 
 import {PROPS_CREDENTIALS} from '@constants';
-import {createNumber} from '@api';
+import {funnel} from '@api';
 
 // Handling submitted data
 function submitHandler(
@@ -20,10 +20,12 @@ function submitHandler(
     ]);
   }
   const data = newNumber.slice(1, 4) + newNumber.slice(5);
-  createNumber(user_id, baseURL, token, data, dispatch).then(response => {
-    console.log(response);
-    setIsUpdatingDetail(true);
-  });
+  funnel('HTTP')
+    .createNumber(user_id, baseURL, token, data, dispatch)
+    .then(response => {
+      console.log(response);
+      setIsUpdatingDetail(true);
+    });
 }
 
 /*
@@ -34,7 +36,6 @@ export default function PhoneNumberEditor({
   id,
   toggleOverlay,
   setIsUpdatingDetail,
-  numbers,
   request,
   dispatch,
 }) {

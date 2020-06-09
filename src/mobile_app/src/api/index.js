@@ -1,3 +1,2 @@
-export * from './profile';
-export * from './usersdata';
-export * from './numbers';
+export * from './funnel';
+export * from './allowedModes';

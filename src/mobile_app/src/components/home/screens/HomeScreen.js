@@ -6,7 +6,8 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import GateButton from '../GateButton';
 import UserBoard from '../UserBoard';
-import {requestProfile} from '@api';
+import {funnel, allowedModes} from '@api';
+import {invalidateToken} from '@redux/actions';
 import {FORM_INIT} from '@constants';
 
 /*
@@ -19,7 +20,7 @@ import {FORM_INIT} from '@constants';
  */
 
 const HomeScreenComponent = ({request, dispatch, navigation}) => {
-  const {userId, baseURL, token} = request;
+  const {userId, baseURL, token, mode} = request;
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState({
     ...FORM_INIT.USER,
@@ -29,7 +30,8 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
   useFocusEffect(
     useCallback(() => {
       if (userId) {
-        requestProfile(userId, baseURL, token, dispatch)
+        funnel(mode)
+          .requestProfile(userId, baseURL, token, dispatch)
           .then(response => {
             const {data} = response;
             setUser(data);
@@ -41,7 +43,7 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
             console.log(error);
           });
       }
-    }, [baseURL, dispatch, token, userId]),
+    }, [baseURL, dispatch, mode, token, userId]),
   );
 
   return (
@@ -51,9 +53,9 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
       ) : (
         <UserBoard userData={user} isAdmin={isAdmin} />
       )}
-      <GateButton />
+      {allowedModes.gate.includes(mode) ? <GateButton /> : <View />}
       <Divider />
-      {isAdmin ? (
+      {isAdmin && allowedModes.profiles.includes(mode) ? (
         <Button
           title="Gestión de usuarios"
           onPress={() => navigation.navigate('UserManagement')}

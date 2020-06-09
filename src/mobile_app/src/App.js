@@ -25,6 +25,7 @@ export const store = createStore(
       isFetching: false,
       didInvalidate: false,
       userId: null,
+      mode: 'HTTP',
       baseURL: 'http://192.168.0.108:8000/api',
       token: {
         access: null,

@@ -5,7 +5,7 @@ import {View, FlatList} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
 import UserProfile from './UserProfile';
-import {requestAllProfiles} from '@api';
+import {funnel} from '@api';
 
 /*
  * List displaying each profile included
@@ -13,15 +13,17 @@ import {requestAllProfiles} from '@api';
  */
 
 const UserProfileListComponent = ({request, navigation, dispatch}) => {
-  const {baseURL, token} = request;
+  const {baseURL, token, mode} = request;
   const [userDataList, setUserDataList] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
-      requestAllProfiles(baseURL, token, dispatch).then(response => {
-        setUserDataList(response.data.results);
-      });
-    }, [baseURL, dispatch, token]),
+      funnel(mode)
+        .requestAllProfiles(baseURL, token, dispatch)
+        .then(response => {
+          setUserDataList(response.data.results);
+        });
+    }, [baseURL, dispatch, mode, token]),
   );
 
   return (
