@@ -1,7 +1,7 @@
 import {Alert} from 'react-native';
 import axios from 'axios';
 import {URL} from '@constants';
-import {invalidateToken} from '@redux/actions';
+import {invalidateJWT} from '@redux/actions';
 import {randomId, inputValidation} from '@utils';
 import {INPUT, STATUS} from '@constants';
 
@@ -20,7 +20,7 @@ export const requestProfile = async (id, baseURL, token, dispatch) => {
     })
     .catch(error => {
       console.log(error);
-      dispatch(invalidateToken());
+      dispatch(invalidateJWT());
     });
 };
 
@@ -38,7 +38,7 @@ export const requestAllProfiles = async (baseURL, token, dispatch) => {
     })
     .catch(error => {
       console.log(error);
-      dispatch(invalidateToken());
+      dispatch(invalidateJWT());
     });
 };
 
@@ -88,7 +88,7 @@ export const createProfile = async (baseURL, token, data, dispatch) => {
       })
       .catch(error => {
         console.log(error);
-        dispatch(invalidateToken());
+        dispatch(invalidateJWT());
       });
   }
 };
@@ -114,6 +114,6 @@ export const deleteProfile = async (id, baseURL, token, dispatch) => {
     })
     .catch(error => {
       console.log(error);
-      dispatch(invalidateToken());
+      dispatch(invalidateJWT());
     });
 };

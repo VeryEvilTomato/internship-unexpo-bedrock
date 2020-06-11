@@ -1,15 +1,13 @@
-import React, {useEffect} from 'react';
-
-import {Button, Text} from 'react-native-elements';
-
+import React from 'react';
+import {connect} from 'react-redux';
+import {Text} from 'react-native-elements';
 import {View} from 'react-native';
 
 /*
  * Active session user information componen
  */
-
-export default function UserBoard({userData, isAdmin}) {
-  let {first_name, last_name} = userData;
+const UserBoardComponent = ({userData, isAdmin}) => {
+  const {first_name, last_name} = userData;
 
   return (
     <View>
@@ -19,4 +17,6 @@ export default function UserBoard({userData, isAdmin}) {
       {isAdmin ? <Text>Usted posee derechos de administrador</Text> : <View />}
     </View>
   );
-}
+};
+
+export const UserBoard = connect(state => state)(UserBoardComponent);

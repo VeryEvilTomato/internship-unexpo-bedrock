@@ -4,10 +4,9 @@ import {Button, Text, Divider} from 'react-native-elements';
 import {View} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
-import GateButton from '../GateButton';
-import UserBoard from '../UserBoard';
+import {GateButton} from '../GateButton';
+import {UserBoard} from '../UserBoard';
 import {funnel, allowedModes} from '@api';
-import {invalidateToken} from '@redux/actions';
 import {FORM_INIT} from '@constants';
 
 /*
@@ -33,10 +32,12 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
         funnel(mode)
           .requestProfile(userId, baseURL, token, dispatch)
           .then(response => {
-            const {data} = response;
-            setUser(data);
-            if (data.usersdata !== null) {
-              setIsAdmin(data.usersdata.accessLevel === 'AL' ? true : false);
+            if (response !== undefined) {
+              const {data} = response;
+              setUser(data);
+              if (data.usersdata !== null) {
+                setIsAdmin(data.usersdata.accessLevel === 'AL' ? true : false);
+              }
             }
           })
           .catch(error => {
@@ -48,12 +49,16 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
 
   return (
     <View>
-      {userId === null ? (
-        <Text>Cargando perfil...</Text>
-      ) : (
+      {allowedModes.profiles.includes(mode) && userId !== null ? (
         <UserBoard userData={user} isAdmin={isAdmin} />
+      ) : (
+        <View />
       )}
-      {allowedModes.gate.includes(mode) ? <GateButton /> : <View />}
+      {allowedModes.gate.includes(mode) ? (
+        <GateButton userData={user} />
+      ) : (
+        <View />
+      )}
       <Divider />
       {isAdmin && allowedModes.profiles.includes(mode) ? (
         <Button

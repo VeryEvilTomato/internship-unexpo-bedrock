@@ -21,7 +21,9 @@ const UserProfileListComponent = ({request, navigation, dispatch}) => {
       funnel(mode)
         .requestAllProfiles(baseURL, token, dispatch)
         .then(response => {
-          setUserDataList(response.data.results);
+          if (response !== null) {
+            setUserDataList(response.data.results);
+          }
         });
     }, [baseURL, dispatch, mode, token]),
   );

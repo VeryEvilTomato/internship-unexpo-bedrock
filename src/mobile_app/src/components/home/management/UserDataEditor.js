@@ -121,8 +121,9 @@ export default function UserDataEditor({
         <Text>Placa:</Text>
         <Input
           value={formState.enrollment}
+          autoCapitalize="characters"
           onChangeText={text => {
-            setFormState({...formState, enrollment: text.toUpperCase()});
+            setFormState({...formState, enrollment: text});
           }}
           {...PROPS_NEW_USER.CAR.ENROLLMENT}
         />
@@ -144,7 +145,7 @@ export default function UserDataEditor({
           submitHandler(
             id,
             dataExists,
-            formState,
+            {...formState, enrollment: formState.enrollment.toUpperCase()},
             baseURL,
             token,
             dispatch,

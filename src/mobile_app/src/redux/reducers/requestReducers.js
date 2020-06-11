@@ -16,9 +16,10 @@ const requestReducers = (state = {}, action) => {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        token: action.token,
+        token: action.payload,
       };
     case actions.INVALIDATE_TOKEN:
+      // Clear registered tokens in memory and storage
       clearStorageTokens();
       return {
         ...state,
@@ -28,10 +29,16 @@ const requestReducers = (state = {}, action) => {
         userId: null,
       };
     case actions.DECODE_JWT:
+      // Decode JWT in order to extract User ID
       let {user_id} = jwtDecode(state.token.access);
       return {
         ...state,
         userId: user_id,
+      };
+    case actions.CHANGE_OPMODE:
+      return {
+        ...state,
+        mode: action.payload,
       };
     default:
       return state;
