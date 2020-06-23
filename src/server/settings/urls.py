@@ -14,11 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-"""
-    Aquí simplemente importé el método que cree y lo deje
-    en una ruta aislada "new-log" de las demás.
-"""
-
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.urls import path, include
@@ -45,5 +40,4 @@ urlpatterns = [
     path('api/toke/refresh/', TokenRefreshView.as_view()),
     path('api/token/verify/', TokenVerifyView.as_view(), name="token_verify"),
     path('api-auth/', include('rest_framework.urls')),
-    path('new-log/', LogViews.CreateLogView),
 ]

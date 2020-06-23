@@ -1,12 +1,11 @@
 import paho.mqtt.client as mqtt
 
 """
----------------------------------------
-----------Variables definition---------
----------------------------------------
+--------------------------
+Variables definition
+--------------------------
 """
-
-CLIENT_NAME = "Django"
+CLIENT_NAME = "GSM_Module"
 MQTT_SERVER_HOST = 'localhost'
 PORT = 1883
 TOPIC = 'dev/ESP32'
@@ -16,11 +15,9 @@ QOS = 0
 
 """
 ----------------------------
---------Callbacks-----------
+Callbacks
 ----------------------------
 """
-
-
 def on_connect(client, userdata, flags, rc):
     print("Connected flags", str(flags), "Result code", str(rc))
     client.subscribe('house', qos=0)
@@ -41,3 +38,4 @@ client.on_connect = on_connect  # Attach function to callback
 client.on_message = on_message
 client. on_publish = on_publish
 client.connect(host=MQTT_SERVER_HOST, port=PORT)  # Connect to broker
+client.subscribe(topic="dev/GSM_Module", qos=QOS)

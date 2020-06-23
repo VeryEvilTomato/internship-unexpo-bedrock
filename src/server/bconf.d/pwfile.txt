@@ -1,2 +1,3 @@
 Django:$6$5mNkqcKzOLoh8LIw$cSI8VnV+jwetHiWs7f59/7avXACXK5CcehCKGdyA+htlOB69a/78WCgbSibKyOacZjUzYOb3Gzu9uWk9iS0IGQ==
 ESP32:$6$azxuamtKBn1auZtL$y5JkbrDzc6l1azXmO7KoauefHl7zziq47YFOk05R3gZ5dKzDzInEImRvzON+KV5IRa8PrqNelSK56Tocch3cQw==
+GSM_Module:$6$mP/1K1S7pID4qjH+$aJCQ8vlXcKjksLN+Rwya3tquj+hQ1uoinCvHCheASprGNawFnIW9QhOTVkQDuG7HOQFfvqcVyk+2OAkY7S3kog==

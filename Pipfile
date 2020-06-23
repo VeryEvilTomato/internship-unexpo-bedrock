@@ -14,6 +14,7 @@ channels-redis = "*"
 djangorestframework-simplejwt = "*"
 paho-mqtt = "*"
 psycopg2 = "*"
+pyserial = "*"
 
 [requires]
 python_version = "3.7"

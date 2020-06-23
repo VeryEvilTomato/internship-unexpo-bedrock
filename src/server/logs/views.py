@@ -1,29 +1,21 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions, request
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import action
 from .models import Log
 import logs.mqtt as mqtt
 from .serializers import LogSerializer
-
-"""
-    Traté de no darme mucha mala vida probando si publicaba,
-    así que sencillamente cree un View a los pingazos que
-    si llega en una petición POST, ejecuta el método
-    publish de la clase MqttClient
-"""
 
 
 class LogViewSet(viewsets.ModelViewSet):
     serializer_class = LogSerializer
     queryset = Log.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
 
-@csrf_exempt
-def CreateLogView(request):
-    if request.method == 'POST':
+    def create(self, request):
         print("Opening gate")
-        mqtt.client.publish()
-        return JsonResponse({'message': 'ok'})
-
+        # Samuel recuerda normativa estandar del formato autopep8 para el lenguaje Python
+        mqtt.client.publish(mqtt.TOPIC, payload='1',
+                            qos=mqtt.QOS, retain=False)
+        return super().create(request)
