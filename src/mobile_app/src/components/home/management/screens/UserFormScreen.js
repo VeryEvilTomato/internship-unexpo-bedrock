@@ -4,11 +4,12 @@ import {Button, Input, Divider, Text} from 'react-native-elements';
 import {ScrollView} from 'react-native';
 
 import {FORM_INIT, PROPS_NEW_USER, PROPS_CREDENTIALS} from '@constants';
-import {createProfile} from '@api';
+import {funnel} from '@api';
 import {STATUS} from '@constants';
 
-function submitHandler(formState, baseURL, token, dispatch, navigation) {
-  createProfile(baseURL, token, formState, dispatch)
+function submitHandler(formState, baseURL, token, dispatch, navigation, mode) {
+  funnel(mode)
+    .createProfile(baseURL, token, formState, dispatch)
     .then(response => {
       switch (response.status) {
         case STATUS.SUCCESS:
@@ -26,7 +27,7 @@ function submitHandler(formState, baseURL, token, dispatch, navigation) {
 }
 
 export const UserFormScreenComponent = ({request, dispatch, navigation}) => {
-  const {token, baseURL} = request;
+  const {token, baseURL, mode} = request;
   const [formState, setFormState] = useState({
     ...FORM_INIT.CREDENTIALS,
     ...FORM_INIT.USER,
@@ -76,7 +77,7 @@ export const UserFormScreenComponent = ({request, dispatch, navigation}) => {
       <Button
         title="Agregar al sistema"
         onPress={() =>
-          submitHandler(formState, baseURL, token, dispatch, navigation)
+          submitHandler(formState, baseURL, token, dispatch, navigation, mode)
         }
       />
       <Divider />

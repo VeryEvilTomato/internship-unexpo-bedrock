@@ -1,11 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
 import {Button, Text} from 'react-native-elements';
-
 import {View, Alert} from 'react-native';
 
-import {invalidateToken} from '@redux/actions';
+import {invalidateToken, changeOpMode} from '@redux/actions';
+import {Picker} from '@react-native-community/picker';
 
 const SettingsScreenComponent = ({request, dispatch}) => {
   return (
@@ -29,6 +28,18 @@ const SettingsScreenComponent = ({request, dispatch}) => {
           ]);
         }}
       />
+      <View>
+        <Text>Modo de operación:</Text>
+        <Picker
+          selectedValue={request.mode}
+          style={{height: 50, width: 400}}
+          onValueChange={itemValue => {
+            dispatch(changeOpMode(itemValue));
+          }}>
+          <Picker.Item label="Red Local WiFi" value="HTTP" />
+          <Picker.Item label="Mensajes de texto" value="SMS" />
+        </Picker>
+      </View>
     </View>
   );
 };

@@ -4,6 +4,7 @@ export const GET_TOKEN = 'GET_TOKEN';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 export const INVALIDATE_TOKEN = 'INVALIDATE_TOKEN';
 export const DECODE_JWT = 'DECODE_JWT';
+export const CHANGE_OPMODE = 'CHANGE_OPMODE';
 
 const requestToken = () => {
   return {
@@ -11,10 +12,10 @@ const requestToken = () => {
   };
 };
 
-const receiveToken = token => {
+export const receiveToken = token => {
   return {
     type: RECEIVE_TOKEN,
-    token,
+    payload: token,
   };
 };
 
@@ -30,8 +31,15 @@ export const decodeJWT = () => {
   };
 };
 
-export function authenticateUser(credentials, request) {
-  return function(dispatch) {
+export const changeOpMode = mode => {
+  return {
+    type: CHANGE_OPMODE,
+    payload: mode,
+  };
+};
+
+export function authenticateUser(credentials, request, Alert) {
+  return async dispatch => {
     dispatch(requestToken());
 
     const baseURL = request.baseURL;
@@ -51,41 +59,50 @@ export function authenticateUser(credentials, request) {
       .then(token => {
         if (token.access) {
           dispatch(decodeJWT());
+          return token;
         }
       })
       .catch(error => {
         dispatch(invalidateToken());
-        alert(
+        Alert.alert(
+          '',
           'Credenciales inválidos, verifique el nombre de usuario y contraseña',
+          [{text: 'Continuar', onPress: () => {}}],
         );
       });
   };
 }
 
-export function invalidateJWT(credentials, request) {
-  return function(dispatch) {
-    dispatch(requestToken());
-
-    const baseURL = request.baseURL;
+export function invalidateJWT() {
+  return async (dispatch, getState) => {
+    const {request} = getState();
     const api = axios.create({
-      baseURL,
+      baseURL: request.baseURL,
     });
+
+    if (request.token === null) {
+      dispatch(invalidateToken());
+      return null;
+    }
 
     return api({
       method: 'post',
-      url: '/token/',
-      data: credentials,
+      url: '/toke/refresh/',
+      data: {refresh: request.token.refresh},
     })
       .then(response => {
-        dispatch(receiveToken(response.data));
+        dispatch(
+          receiveToken({...request.token, access: response.data.access}),
+        );
         return response.data;
       })
-      .then(token => {})
+      .then(responseToken => {
+        if (responseToken.access) {
+          dispatch(decodeJWT());
+        }
+      })
       .catch(error => {
         dispatch(invalidateToken());
-        alert(
-          'Credenciales inválidos, verifique el nombre de usuario y contraseña',
-        );
       });
   };
 }

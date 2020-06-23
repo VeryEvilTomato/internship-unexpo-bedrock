@@ -4,9 +4,9 @@ import {Button, Text, Divider} from 'react-native-elements';
 import {View} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
-import GateButton from '../GateButton';
-import UserBoard from '../UserBoard';
-import {requestProfile} from '@api';
+import {GateButton} from '../GateButton';
+import {UserBoard} from '../UserBoard';
+import {funnel, allowedModes} from '@api';
 import {FORM_INIT} from '@constants';
 
 /*
@@ -19,7 +19,7 @@ import {FORM_INIT} from '@constants';
  */
 
 const HomeScreenComponent = ({request, dispatch, navigation}) => {
-  const {userId, baseURL, token} = request;
+  const {userId, baseURL, token, mode} = request;
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState({
     ...FORM_INIT.USER,
@@ -29,31 +29,38 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
   useFocusEffect(
     useCallback(() => {
       if (userId) {
-        requestProfile(userId, baseURL, token, dispatch)
+        funnel(mode)
+          .requestProfile(userId, baseURL, token, dispatch)
           .then(response => {
-            const {data} = response;
-            setUser(data);
-            if (data.usersdata !== null) {
-              setIsAdmin(data.usersdata.accessLevel === 'AL' ? true : false);
+            if (response !== undefined) {
+              const {data} = response;
+              setUser(data);
+              if (data.usersdata !== null) {
+                setIsAdmin(data.usersdata.accessLevel === 'AL' ? true : false);
+              }
             }
           })
           .catch(error => {
             console.log(error);
           });
       }
-    }, [baseURL, dispatch, token, userId]),
+    }, [baseURL, dispatch, mode, token, userId]),
   );
 
   return (
     <View>
-      {userId === null ? (
-        <Text>Cargando perfil...</Text>
-      ) : (
+      {allowedModes.profiles.includes(mode) && userId !== null ? (
         <UserBoard userData={user} isAdmin={isAdmin} />
+      ) : (
+        <View />
       )}
-      <GateButton />
+      {allowedModes.gate.includes(mode) ? (
+        <GateButton userData={user} />
+      ) : (
+        <View />
+      )}
       <Divider />
-      {isAdmin ? (
+      {isAdmin && allowedModes.profiles.includes(mode) ? (
         <Button
           title="Gestión de usuarios"
           onPress={() => navigation.navigate('UserManagement')}

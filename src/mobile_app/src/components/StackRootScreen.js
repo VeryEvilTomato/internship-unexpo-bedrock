@@ -1,12 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
-import {LoginScreen, SplashScreen} from './screens';
-
-import {DrawerHomeScreen} from './home/DrawerHomeScreen';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+
+import {DrawerHomeScreen} from './home/DrawerHomeScreen';
+import {LoginScreen, SplashScreen} from './screens';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +19,7 @@ let StackRoot = ({request}) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="Splash"
         screenOptions={{
           headerTitleAlign: 'center',
         }}>
@@ -31,16 +30,16 @@ let StackRoot = ({request}) => {
         request.token.access === null ? (
           <>
             <Stack.Screen
-              name="Login"
-              component={LoginScreen}
+              name="Splash"
+              component={SplashScreen}
               options={{
                 headerShown: false,
                 title: "Error, this shouldn't be visible",
               }}
             />
             <Stack.Screen
-              name="Splash"
-              component={SplashScreen}
+              name="Login"
+              component={LoginScreen}
               options={{
                 headerShown: false,
                 title: "Error, this shouldn't be visible",

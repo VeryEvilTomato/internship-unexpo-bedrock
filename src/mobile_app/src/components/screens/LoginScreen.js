@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-
 import {Button, Input} from 'react-native-elements';
-
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 
 import {FORM_INIT, PROPS_CREDENTIALS} from '@constants';
 import {authenticateUser} from '@redux/actions';
+import {saveStorageTokens} from '@utils/asyncStorage';
 
 function submitForm(request, formState, reduxDispatch) {
-  reduxDispatch(authenticateUser(formState, request));
+  reduxDispatch(authenticateUser(formState, request, Alert)).then(token => {
+    saveStorageTokens(token);
+  });
 }
 
 const LoginScreenComponent = ({request, dispatch}) => {

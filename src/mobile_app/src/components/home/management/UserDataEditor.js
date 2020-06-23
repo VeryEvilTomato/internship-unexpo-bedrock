@@ -4,7 +4,7 @@ import {View, ScrollView, Alert, Switch} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 
 import {PROPS_NEW_USER, FORM_INIT} from '@constants';
-import {createUsersdata, updateUsersdata} from '@api';
+import {funnel} from '@api';
 
 // Handling submitted data
 function submitHandler(
@@ -15,18 +15,21 @@ function submitHandler(
   token,
   dispatch,
   setIsUpdatingDetail,
+  mode,
 ) {
   // If there is no existing user data, create it.
   if (dataExists) {
-    updateUsersdata(formState.id, baseURL, token, formState, dispatch).then(
-      response => {
+    funnel(mode)
+      .updateUsersdata(formState.id, baseURL, token, formState, dispatch)
+      .then(response => {
         setIsUpdatingDetail(true);
-      },
-    );
+      });
   } else {
-    createUsersdata(id, baseURL, token, formState, dispatch).then(response => {
-      setIsUpdatingDetail(true);
-    });
+    funnel(mode)
+      .createUsersdata(id, baseURL, token, formState, dispatch)
+      .then(response => {
+        setIsUpdatingDetail(true);
+      });
   }
 }
 
@@ -43,7 +46,7 @@ export default function UserDataEditor({
   request,
   setIsUpdatingDetail,
 }) {
-  const {baseURL, token} = request;
+  const {baseURL, token, mode} = request;
   const [formState, setFormState] = useState(FORM_INIT.USER_DATA);
   const toggleLocks = () =>
     setFormState({...formState, locks: !formState.locks});
@@ -118,8 +121,9 @@ export default function UserDataEditor({
         <Text>Placa:</Text>
         <Input
           value={formState.enrollment}
+          autoCapitalize="characters"
           onChangeText={text => {
-            setFormState({...formState, enrollment: text.toUpperCase()});
+            setFormState({...formState, enrollment: text});
           }}
           {...PROPS_NEW_USER.CAR.ENROLLMENT}
         />
@@ -141,11 +145,12 @@ export default function UserDataEditor({
           submitHandler(
             id,
             dataExists,
-            formState,
+            {...formState, enrollment: formState.enrollment.toUpperCase()},
             baseURL,
             token,
             dispatch,
             setIsUpdatingDetail,
+            mode,
           );
         }}
       />

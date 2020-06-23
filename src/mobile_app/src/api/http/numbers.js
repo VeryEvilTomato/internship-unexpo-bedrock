@@ -92,6 +92,7 @@ export const updateNumber = async (id, baseURL, token, data, dispatch) => {
       };
     })
     .catch(error => {
+      console.log(error);
       dispatch(invalidateToken());
     });
 };

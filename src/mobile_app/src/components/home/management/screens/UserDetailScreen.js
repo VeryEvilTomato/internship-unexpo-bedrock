@@ -2,26 +2,14 @@ import React, {useEffect, useCallback, useState} from 'react';
 import {connect} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {Text, Button, Divider} from 'react-native-elements';
-import {View, BackHandler} from 'react-native';
+import {View, BackHandler, Alert} from 'react-native';
 
 import {FORM_INIT} from '@constants';
-import {requestProfile, deleteNumber} from '@api';
+import {funnel} from '@api';
 import {accessLevelToText} from '@utils';
 import {OverlayModal} from '@containers';
 import UserDataEditor from '../UserDataEditor';
 import PhoneNumberEditor from '../PhoneNumberEditor';
-
-function numberDeleteHandler(
-  numberId,
-  baseURL,
-  token,
-  dispatch,
-  setIsUpdatingDetail,
-) {
-  deleteNumber(numberId, baseURL, token, dispatch).then(response => {
-    setIsUpdatingDetail(true);
-  });
-}
 
 /*
  * Screen to display and request all data from a specific profile.
@@ -33,7 +21,7 @@ const UserDetailScreenComponent = ({
   navigation,
   route: {params},
 }) => {
-  const {baseURL, token} = request;
+  const {baseURL, token, mode} = request;
   const {id} = params;
   const [userState, setUserState] = useState(FORM_INIT.USER);
   const [isUpdatingDetail, setIsUpdatingDetail] = useState(true);
@@ -58,7 +46,8 @@ const UserDetailScreenComponent = ({
   useFocusEffect(
     useCallback(() => {
       if (isUpdatingDetail) {
-        requestProfile(id, baseURL, token, dispatch)
+        funnel(mode)
+          .requestProfile(id, baseURL, token, dispatch)
           .then(response => {
             // Set user information & numbers
             setUserState(response.data);
@@ -68,7 +57,7 @@ const UserDetailScreenComponent = ({
             console.log(error);
           });
       }
-    }, [isUpdatingDetail, id, baseURL, token, dispatch]),
+    }, [isUpdatingDetail, mode, id, baseURL, token, dispatch]),
   );
   return (
     <View>
@@ -133,6 +122,7 @@ const UserDetailScreenComponent = ({
                       token,
                       dispatch,
                       setIsUpdatingDetail,
+                      mode,
                     );
                   }}
                 />
@@ -153,6 +143,12 @@ const UserDetailScreenComponent = ({
         />
       </View>
       <Divider />
+      <Button
+        title="Eliminar perfil"
+        onPress={() => {
+          ProfileDeleteHandler(id, baseURL, token, dispatch, navigation, mode);
+        }}
+      />
     </View>
   );
 };
@@ -160,3 +156,55 @@ const UserDetailScreenComponent = ({
 export const UserDetailScreen = connect(state => state)(
   UserDetailScreenComponent,
 );
+
+// Handlers
+
+function ProfileDeleteHandler(
+  userId,
+  baseURL,
+  token,
+  dispatch,
+  navigation,
+  mode,
+) {
+  Alert.alert(
+    'Advertencia',
+    'Esta acción es irrecuperable ¿Seguro que de sea eliminar el perfil?',
+    [
+      {
+        text: 'Aceptar',
+        onPress: () => {
+          funnel(mode)
+            .deleteProfile(userId, baseURL, token, dispatch)
+            .then(response => {
+              navigation.navigate('UserList');
+            });
+        },
+      },
+      {text: 'Cancelar', onPress: () => {}},
+    ],
+  );
+}
+
+function numberDeleteHandler(
+  numberId,
+  baseURL,
+  token,
+  dispatch,
+  setIsUpdatingDetail,
+  mode,
+) {
+  Alert.alert('Advertencia', '¿Seguro que desea eliminar el número?', [
+    {
+      text: 'Aceptar',
+      onPress: () => {
+        funnel(mode)
+          .deleteNumber(numberId, baseURL, token, dispatch)
+          .then(response => {
+            setIsUpdatingDetail(true);
+          });
+      },
+    },
+    {text: 'Regresar', onPress: () => {}},
+  ]);
+}
