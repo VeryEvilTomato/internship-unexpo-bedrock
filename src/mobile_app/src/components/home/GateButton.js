@@ -1,9 +1,10 @@
 import React, {Alert} from 'react';
 import {Button} from 'react-native-elements';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {connect} from 'react-redux';
 
 import {funnel} from '@api';
+import styles from '@styles';
 
 /*
  * Component to open up gate
@@ -11,12 +12,29 @@ import {funnel} from '@api';
 const GateButtonComponent = ({request, dispatch, userData}) => {
   return (
     <View>
-      <Button
-        title="Encender"
-        onPress={() => {
-          gateHandler({...request, ...userData}, dispatch);
-        }}
-      />
+      <Text style={styles.font.darkLarge}>Control del portón</Text>
+      <View style={styles.container.row}>
+        <Button
+          title="SMS"
+          onPress={() => {
+            gateHandler({...request, ...userData, mode: 'SMS'}, dispatch);
+          }}
+          type="solid"
+          icon={styles.icon.gateLargeSms()}
+          buttonStyle={styles.button.gate}
+          titleStyle={styles.font.darkLargeNoMargin}
+        />
+        <Button
+          title="WiFi"
+          onPress={() => {
+            gateHandler({...request, ...userData, mode: 'HTTP'}, dispatch);
+          }}
+          type="solid"
+          icon={styles.icon.gateLargeWifi()}
+          buttonStyle={styles.button.gate}
+          titleStyle={styles.font.darkLargeNoMargin}
+        />
+      </View>
     </View>
   );
 };

@@ -3,11 +3,14 @@ import {connect} from 'react-redux';
 import {Button, Text, Divider} from 'react-native-elements';
 import {View} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
+import {Picker} from '@react-native-community/picker';
 
 import {GateButton} from '../GateButton';
 import {UserBoard} from '../UserBoard';
 import {funnel, allowedModes} from '@api';
+import {changeOpMode} from '@redux/actions';
 import {FORM_INIT} from '@constants';
+import styles from '@styles';
 
 /*
  * Loads basic user information, to be displayed
@@ -48,30 +51,64 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
   );
 
   return (
-    <View>
-      {allowedModes.profiles.includes(mode) && userId !== null ? (
-        <UserBoard userData={user} isAdmin={isAdmin} />
-      ) : (
-        <View />
-      )}
-      {allowedModes.gate.includes(mode) ? (
-        <GateButton userData={user} />
-      ) : (
-        <View />
-      )}
-      <Divider />
-      {isAdmin && allowedModes.profiles.includes(mode) ? (
-        <Button
-          title="Gestión de usuarios"
-          onPress={() => navigation.navigate('UserManagement')}
-        />
-      ) : (
-        <View />
-      )}
-      <Button
-        title="Opciones"
-        onPress={() => navigation.navigate('Settings')}
-      />
+    <View style={styles.container.columnBetween}>
+      <View>
+        {allowedModes.profiles.includes(mode) && userId !== null ? (
+          <UserBoard userData={user} isAdmin={isAdmin} />
+        ) : (
+          <View />
+        )}
+        {allowedModes.gate.includes(mode) ? (
+          <GateButton userData={user} />
+        ) : (
+          <View />
+        )}
+        <Divider style={styles.divider.normal} />
+      </View>
+      <View style={styles.container.columnBetween}>
+        <View>
+          {isAdmin ? (
+            <Button
+              title="Gestión de usuarios"
+              onPress={() => navigation.navigate('UserManagement')}
+              icon={styles.icon.contactList()}
+              buttonStyle={styles.button.normal}
+              titleStyle={styles.font.dark}
+              disabled={!allowedModes.profiles.includes(mode)}
+            />
+          ) : (
+            <View />
+          )}
+          <Button
+            title="Registros de apertura"
+            onPress={() => navigation.navigate('LogTracker')}
+            icon={styles.icon.logTracker()}
+            buttonStyle={styles.button.normal}
+            titleStyle={styles.font.dark}
+            disabled={!allowedModes.profiles.includes(mode)}
+          />
+        </View>
+        <View style={styles.container.rowEvenly}>
+          <Button
+            onPress={() => navigation.navigate('Settings')}
+            icon={styles.icon.settingsButton()}
+            buttonStyle={styles.button.icon}
+            containerStyle={styles.container.spacingCenter}
+            titleStyle={styles.font.dark}
+          />
+          <View style={styles.card.large}>
+            <Text style={styles.font.darkMargin}>Modo de operación</Text>
+            <Picker
+              selectedValue={request.mode}
+              onValueChange={itemValue => {
+                dispatch(changeOpMode(itemValue));
+              }}>
+              <Picker.Item label="Red Local WiFi" value="HTTP" />
+              <Picker.Item label="Mensajes de texto" value="SMS" />
+            </Picker>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };

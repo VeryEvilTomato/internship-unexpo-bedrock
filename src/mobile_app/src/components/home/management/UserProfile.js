@@ -1,8 +1,8 @@
 import React from 'react';
+import {Text, Divider} from 'react-native-elements';
+import {View, TouchableOpacity} from 'react-native';
 
-import {Button, Text} from 'react-native-elements';
-
-import {View} from 'react-native';
+import styles from '@styles';
 
 /*
  * Basic user information display.
@@ -10,38 +10,33 @@ import {View} from 'react-native';
 
 export default function UserProfile({profile, navigation}) {
   return (
-    <View
-      style={{
-        backgroundColor: '#cfe0ff',
-        marginTop: 5,
+    <TouchableOpacity
+      style={[styles.container.columnBetween, styles.card.wide]}
+      onPress={() => {
+        navigation.navigate('UserDetail', {
+          ...profile,
+          recentlyCreated: false,
+        });
       }}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <Text>
-          Nombre: {profile.first_name} {profile.last_name}
+      <View>
+        <Text style={[styles.font.dark]}>
+          {profile.first_name} {profile.last_name}
         </Text>
-        <View>
-          <Text>Numeros:</Text>
-          {profile.nums.map((phone, index) => (
-            <View key={index}>
-              <Text>{phone.number}</Text>
-            </View>
-          ))}
+        <Divider style={styles.divider.small} />
+        <View style={styles.container.rowStart}>
+          <Text style={[styles.font.dark]}>Número(s): </Text>
+          <View style={styles.container.columnStart}>
+            {profile.nums.slice(0, 2).map((phone, index) => (
+              <View key={index}>
+                <Text style={styles.font.darkNormal}>
+                  {phone.number}
+                  {index === 1 ? '... ' : ', '}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
       </View>
-      <Button
-        title="Perfil"
-        onPress={() => {
-          navigation.navigate('UserDetail', {
-            ...profile,
-            recentlyCreated: false,
-          });
-        }}
-      />
-    </View>
+    </TouchableOpacity>
   );
 }

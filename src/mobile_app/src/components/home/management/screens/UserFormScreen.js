@@ -6,6 +6,7 @@ import {ScrollView} from 'react-native';
 import {FORM_INIT, PROPS_NEW_USER, PROPS_CREDENTIALS} from '@constants';
 import {funnel} from '@api';
 import {STATUS} from '@constants';
+import styles from '@styles';
 
 function submitHandler(formState, baseURL, token, dispatch, navigation, mode) {
   funnel(mode)

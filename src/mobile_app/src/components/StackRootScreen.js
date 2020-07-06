@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 
 import {DrawerHomeScreen} from './home/DrawerHomeScreen';
 import {LoginScreen, SplashScreen} from './screens';
+import {colors} from '@styles/constants';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,15 @@ let StackRoot = ({request}) => {
         initialRouteName="Splash"
         screenOptions={{
           headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: colors.dark,
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            color: colors.light,
+            fontSize: 22,
+          },
+          ...TransitionPresets.ScaleFromCenterAndroid,
         }}>
         {/*
          * If no JWT token is registered, login screen displays,
@@ -52,7 +62,7 @@ let StackRoot = ({request}) => {
               name="DrawerHome"
               component={DrawerHomeScreen}
               options={{
-                title: 'Bedrock',
+                title: 'BEDROCK',
               }}
             />
           </>

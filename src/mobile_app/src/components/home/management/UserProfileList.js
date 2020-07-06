@@ -6,6 +6,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import UserProfile from './UserProfile';
 import {funnel} from '@api';
+import styles from '@styles';
 
 /*
  * List displaying each profile included
@@ -21,15 +22,17 @@ const UserProfileListComponent = ({request, navigation, dispatch}) => {
       funnel(mode)
         .requestAllProfiles(baseURL, token, dispatch)
         .then(response => {
-          if (response !== null) {
-            setUserDataList(response.data.results);
-          }
-        });
+          setUserDataList(response.data.results);
+        })
+        .catch(() => {});
     }, [baseURL, dispatch, mode, token]),
   );
 
   return (
-    <View style={{height: 500}}>
+    <View style={styles.card.scroll}>
+      <Text style={[styles.font.dark, styles.font.margin]}>
+        Lista de perfiles:
+      </Text>
       {userDataList.length > 0 ? <View /> : <Text>Cargando...</Text>}
       <FlatList
         data={userDataList}

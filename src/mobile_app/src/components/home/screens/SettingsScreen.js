@@ -1,18 +1,25 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Button, Text} from 'react-native-elements';
+import {Button, Text, Divider} from 'react-native-elements';
 import {View, Alert} from 'react-native';
 
-import {invalidateToken, changeOpMode} from '@redux/actions';
-import {Picker} from '@react-native-community/picker';
+import {invalidateToken} from '@redux/actions';
+import styles from '@styles';
 
 const SettingsScreenComponent = ({request, dispatch}) => {
   return (
-    <View>
-      <Text>Opciones</Text>
-      <Button title="Cambiar contraseña" />
+    <View style={styles.container.column}>
+      <Text style={styles.font.darkLarge}>Opciones</Text>
+      <Divider style={styles.divider.normal} />
+      <Button
+        title="Cambiar contraseña"
+        buttonStyle={styles.button.normal}
+        titleStyle={styles.font.dark}
+      />
       <Button
         title="Cerrar sesión"
+        buttonStyle={styles.button.normal}
+        titleStyle={styles.font.dark}
         onPress={() => {
           Alert.alert('Advertencia', '¿Desea abandonar sesión?', [
             {
@@ -28,18 +35,6 @@ const SettingsScreenComponent = ({request, dispatch}) => {
           ]);
         }}
       />
-      <View>
-        <Text>Modo de operación:</Text>
-        <Picker
-          selectedValue={request.mode}
-          style={{height: 50, width: 400}}
-          onValueChange={itemValue => {
-            dispatch(changeOpMode(itemValue));
-          }}>
-          <Picker.Item label="Red Local WiFi" value="HTTP" />
-          <Picker.Item label="Mensajes de texto" value="SMS" />
-        </Picker>
-      </View>
     </View>
   );
 };

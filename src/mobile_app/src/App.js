@@ -27,7 +27,7 @@ export const store = createStore(
       userId: null,
       mode: 'HTTP',
       baseURL: 'http://192.168.0.108:8000/api',
-      baseNUMBER: '+584249650360',
+      baseNUMBER: '+584148302419',
       token: {
         access: null,
         refresh: null,

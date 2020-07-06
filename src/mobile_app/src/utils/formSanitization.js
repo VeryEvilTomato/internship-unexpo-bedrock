@@ -3,7 +3,7 @@ import {INPUT} from '@constants';
 // Checkups/Sanitization on login data and user information strings.
 
 export function inputValidation(field) {
-  let errors = [];
+  const errors = [];
   let checkups = [];
 
   switch (field.type) {
