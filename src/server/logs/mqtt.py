@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 
+message_flag = False
 """
 ---------------------------------------
 ----------Variables definition---------
@@ -7,13 +8,12 @@ import paho.mqtt.client as mqtt
 """
 
 CLIENT_NAME = "Django"
-MQTT_SERVER_HOST = 'localhost'
+MQTT_SERVER_HOST = "localhost"
 PORT = 1883
-TOPIC = 'dev/ESP32'
+TOPIC = "dev/ESP32"
 PASSWORD = "24963808"
 CLEAN_SESSION = False
 QOS = 0
-
 """
 ----------------------------
 --------Callbacks-----------
@@ -23,11 +23,13 @@ QOS = 0
 
 def on_connect(client, userdata, flags, rc):
     print("Connected flags", str(flags), "Result code", str(rc))
-    client.subscribe('house', qos=0)
+    client.subscribe("house", qos=0)
 
 
 def on_message(client, userdata, message):
     print("message received", str(message.payload.decode("utf-8")))
+    global message_flag
+    message_flag = True
 
 
 def on_publish(client, userdata, mid):
@@ -39,5 +41,6 @@ client = mqtt.Client(CLIENT_NAME, clean_session=CLEAN_SESSION)
 client.username_pw_set(CLIENT_NAME, PASSWORD)  # Password set
 client.on_connect = on_connect  # Attach function to callback
 client.on_message = on_message
-client. on_publish = on_publish
+client.on_publish = on_publish
 client.connect(host=MQTT_SERVER_HOST, port=PORT)  # Connect to broker
+client.subscribe("dev/django", qos=QOS)
