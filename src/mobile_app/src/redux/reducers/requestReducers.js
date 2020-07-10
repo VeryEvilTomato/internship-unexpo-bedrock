@@ -40,6 +40,17 @@ const requestReducers = (state = {}, action) => {
         ...state,
         mode: action.payload,
       };
+    case actions.SET_URL:
+      return {
+        ...state,
+        baseURL: action.payload,
+      };
+    case actions.SET_SYS_NUM:
+      return {
+        ...state,
+        baseNUMBER: action.payload,
+      };
+
     default:
       return state;
   }

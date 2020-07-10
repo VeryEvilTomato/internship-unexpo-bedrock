@@ -47,6 +47,22 @@ export const icon = {
   gateLargeWifi: () => {
     return <Icon color={colors.dark} name="wifi" size={iconSize.large} />;
   },
+  delete: () => {
+    return (
+      <Icon color={colors.dark} name="delete-forever" size={iconSize.small} />
+    );
+  },
+  save: () => {
+    return <Icon color={colors.dark} name="save" size={iconSize.normal} />;
+  },
+  renew: () => {
+    return <Icon color={colors.dark} name="autorenew" size={iconSize.normal} />;
+  },
+  exit: () => {
+    return (
+      <Icon color={colors.dark} name="exit-to-app" size={iconSize.normal} />
+    );
+  },
 };
 
 /*

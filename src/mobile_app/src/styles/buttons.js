@@ -11,6 +11,15 @@ export const button = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: colors.secondary,
   },
+  smallIcon: {
+    // Positioning and size
+    ...spacing.small,
+    width: 150,
+    height: 60,
+    // Styling
+    borderRadius: 20,
+    backgroundColor: colors.secondary,
+  },
   normal: {
     // Positioning and size
     ...spacing.normal,
@@ -19,6 +28,17 @@ export const button = StyleSheet.create({
     // Styling
     borderWidth: 0,
     backgroundColor: colors.main,
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  delete: {
+    // Positioning and size
+    ...spacing.normal,
+    width: '70%',
+    height: 60,
+    // Styling
+    borderWidth: 0,
+    backgroundColor: colors.secondary,
     borderTopLeftRadius: 20,
     borderBottomRightRadius: 20,
   },

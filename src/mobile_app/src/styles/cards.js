@@ -45,4 +45,17 @@ export const card = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
+  scrollFixed: {
+    // Postioning and size
+    ...spacing.small,
+    padding: 10,
+    width: '90%',
+    height: 170,
+    // Styling
+    borderColor: colors.main,
+    borderWidth: 3,
+    backgroundColor: colors.light,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
 });

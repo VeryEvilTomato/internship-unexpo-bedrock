@@ -33,6 +33,12 @@ export const container = StyleSheet.create({
     justifyContent: 'space-evenly',
     backgroundColor: colors.light,
   },
+  columnScroll: {
+    height: '90%',
+    padding: 10,
+    flexDirection: 'column',
+    backgroundColor: colors.light,
+  },
   column: {
     ...spacing.flex100,
     flexDirection: 'column',
@@ -46,7 +52,7 @@ export const container = StyleSheet.create({
   rowStart: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    flexWrap: 'nowrap',
+    flexWrap: 'wrap',
   },
   rowEvenly: {
     ...spacing.flex100,

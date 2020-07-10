@@ -2,11 +2,12 @@ import React, {useEffect, useCallback, useState} from 'react';
 import {connect} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {Text, Button, Divider} from 'react-native-elements';
-import {View, BackHandler, Alert} from 'react-native';
+import {View, ScrollView, BackHandler, Alert} from 'react-native';
 
 import {FORM_INIT} from '@constants';
 import {funnel} from '@api';
 import {accessLevelToText} from '@utils';
+import styles from '@styles';
 import {OverlayModal} from '@containers';
 import UserDataEditor from '../UserDataEditor';
 import PhoneNumberEditor from '../PhoneNumberEditor';
@@ -60,34 +61,83 @@ const UserDetailScreenComponent = ({
     }, [isUpdatingDetail, mode, id, baseURL, token, dispatch]),
   );
   return (
-    <View>
+    <ScrollView
+      style={styles.container.columnScroll}
+      nestedScrollEnabled={true}>
       <View>
         <Text>
-          Usuario: {userState.username} Nombre: {userState.first_name}{' '}
-          {userState.last_name}
+          <Text style={styles.font.dark}>Usuario: </Text>
+          <Text style={styles.font.darkNormal}>
+            {userState.username}{' '}
+          </Text>/ <Text style={styles.font.dark}>Nombre: </Text>
+          <Text style={styles.font.darkNormal}>
+            {userState.first_name} {userState.last_name}
+          </Text>
         </Text>
       </View>
-      <Divider />
+      <Divider style={styles.divider.normal} />
 
       <View>
         {userState.usersdata === null ? (
-          <View />
+          <Text style={styles.font.darkNormal}>
+            No existe información almacenada para este usuario
+          </Text>
         ) : (
           <View>
-            <Text>Informacion</Text>
-            <Text>
-              Estatus: {userState.usersdata.locks ? 'Bloqueado' : 'Activo'}
+            <Text style={styles.font.darkLargeCentered}>Informacion</Text>
+            <Text style={styles.font.dark}>
+              Estatus:{' '}
+              <Text style={styles.font.darkNormal}>
+                {userState.usersdata.locks ? 'Bloqueado' : 'Activo'}
+              </Text>
             </Text>
-            <Text>
+
+            <Text style={styles.font.dark}>
               Nivel de acceso:{' '}
-              {accessLevelToText(userState.usersdata.accessLevel)}
+              <Text style={styles.font.darkNormal}>
+                {accessLevelToText(userState.usersdata.accessLevel)}
+              </Text>
             </Text>
-            <Text>Nombre de hogar: {userState.usersdata.residenceName}</Text>
-            <Text>Cuadra: {userState.usersdata.streetBlockNumber}</Text>
-            <Text>N° de hogar: {userState.usersdata.homeNumber}</Text>
-            <Text>Modelo: {userState.usersdata.brandModel}</Text>
-            <Text>Placa: {userState.usersdata.enrollment}</Text>
-            <Text>Color: {userState.usersdata.color}</Text>
+            <Divider style={styles.divider.small} />
+            <Text style={styles.font.darkLargeCentered}>Hogar</Text>
+            <Text style={styles.font.dark}>
+              Nombre:{' '}
+              <Text style={styles.font.darkNormal}>
+                {userState.usersdata.residenceName}
+              </Text>
+            </Text>
+            <Text style={styles.font.dark}>
+              Cuadra:{' '}
+              <Text style={styles.font.darkNormal}>
+                {userState.usersdata.streetBlockNumber}
+              </Text>
+            </Text>
+            <Text style={styles.font.dark}>
+              N° Hogar:{' '}
+              <Text style={styles.font.darkNormal}>
+                {userState.usersdata.homeNumber}
+              </Text>
+            </Text>
+            <Divider style={styles.divider.small} />
+            <Text style={styles.font.darkLargeCentered}>Automóvil</Text>
+            <Text style={styles.font.dark}>
+              Modelo:{' '}
+              <Text style={styles.font.darkNormal}>
+                {userState.usersdata.brandModel}
+              </Text>
+            </Text>
+            <Text style={styles.font.dark}>
+              Placa:{' '}
+              <Text style={styles.font.darkNormal}>
+                {userState.usersdata.enrollment}
+              </Text>
+            </Text>
+            <Text style={styles.font.dark}>
+              color:{' '}
+              <Text style={styles.font.darkNormal}>
+                {userState.usersdata.color}
+              </Text>
+            </Text>
           </View>
         )}
         <OverlayModal
@@ -102,32 +152,48 @@ const UserDetailScreenComponent = ({
           }}
         />
       </View>
-      <Divider />
 
+      <Divider style={styles.divider.normal} />
       <View>
         {userState.nums.length < 1 ? (
-          <View />
+          <Text style={styles.font.darkNormal}>
+            No existen números telefónicos registrados para este usuario
+          </Text>
         ) : (
           <View>
-            <Text>Numeros</Text>
-            {userState.nums.map((phone, index) => (
-              <View key={index} style={{display: 'flex', flexDirection: 'row'}}>
-                <Text>{phone.number}</Text>
-                <Button
-                  title="Eliminar"
-                  onPress={() => {
-                    numberDeleteHandler(
-                      phone.id,
-                      baseURL,
-                      token,
-                      dispatch,
-                      setIsUpdatingDetail,
-                      mode,
-                    );
-                  }}
-                />
+            <Text style={styles.font.darkLargeCentered}>
+              Números telefónicos
+            </Text>
+            <ScrollView
+              style={styles.card.scrollFixed}
+              nestedScrollEnabled={true}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignContent: 'flex-start',
+                  flexWrap: 'wrap',
+                }}>
+                {userState.nums.map((phone, index) => (
+                  <View key={index}>
+                    <Button
+                      title={phone.number}
+                      icon={styles.icon.delete()}
+                      buttonStyle={styles.button.smallIcon}
+                      onPress={() => {
+                        numberDeleteHandler(
+                          phone.id,
+                          baseURL,
+                          token,
+                          dispatch,
+                          setIsUpdatingDetail,
+                          mode,
+                        );
+                      }}
+                    />
+                  </View>
+                ))}
               </View>
-            ))}
+            </ScrollView>
           </View>
         )}
         <OverlayModal
@@ -142,14 +208,18 @@ const UserDetailScreenComponent = ({
           }}
         />
       </View>
-      <Divider />
+
+      <Divider style={styles.divider.normal} />
       <Button
         title="Eliminar perfil"
+        buttonStyle={styles.button.delete}
+        icon={styles.icon.delete()}
+        titleStyle={styles.font.dark}
         onPress={() => {
           ProfileDeleteHandler(id, baseURL, token, dispatch, navigation, mode);
         }}
       />
-    </View>
+    </ScrollView>
   );
 };
 

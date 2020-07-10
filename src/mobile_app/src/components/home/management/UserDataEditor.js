@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Button, Text, Input} from 'react-native-elements';
-import {View, ScrollView, Alert, Switch} from 'react-native';
+import {Button, Text, Input, Divider} from 'react-native-elements';
+import {View, ScrollView, Switch} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 
 import {PROPS_NEW_USER, FORM_INIT} from '@constants';
 import {funnel} from '@api';
+import styles from '@styles';
 
 // Handling submitted data
 function submitHandler(
@@ -14,6 +15,7 @@ function submitHandler(
   baseURL,
   token,
   dispatch,
+  toggleOverlay,
   setIsUpdatingDetail,
   mode,
 ) {
@@ -23,12 +25,14 @@ function submitHandler(
       .updateUsersdata(formState.id, baseURL, token, formState, dispatch)
       .then(response => {
         setIsUpdatingDetail(true);
+        toggleOverlay();
       });
   } else {
     funnel(mode)
       .createUsersdata(id, baseURL, token, formState, dispatch)
       .then(response => {
         setIsUpdatingDetail(true);
+        toggleOverlay();
       });
   }
 }
@@ -58,24 +62,43 @@ export default function UserDataEditor({
 
   return (
     <ScrollView>
-      <Button title="Abandonar" onPress={toggleOverlay} />
-      <Text>Cuenta: </Text>
-      <View>
-        <Text>Nivel de acceso:</Text>
-        <Picker
-          selectedValue={formState.accessLevel}
-          style={{height: 50, width: 400}}
-          onValueChange={(itemValue, itemIndex) => {
-            setFormState({...formState, accessLevel: itemValue});
-          }}>
-          <Picker.Item label="Administrador" value="AL" />
-          <Picker.Item label="Normal" value="NL" />
-          <Picker.Item label="Limitado" value="LL" />
-        </Picker>
-        <Text>Bloqueado:</Text>
-        <Switch onValueChange={toggleLocks} value={formState.locks} />
+      <Button
+        title="Abandonar"
+        onPress={toggleOverlay}
+        buttonStyle={styles.button.delete}
+        titleStyle={styles.font.dark}
+      />
+      <View style={styles.container.row}>
+        {/*
+        <View style={styles.container.flexItem1}>
+          <Text style={styles.font.dark}>Nivel de acceso:</Text>
+          <Picker
+            selectedValue={formState.accessLevel}
+            style={{height: 50, width: 400}}
+            onValueChange={(itemValue, itemIndex) => {
+              setFormState({...formState, accessLevel: itemValue});
+            }}>
+            <Picker.Item label="Administrador" value="AL" />
+            <Picker.Item label="Normal" value="NL" />
+            <Picker.Item label="Limitado" value="LL" />
+          </Picker>
+        </View>
+        */}
+        <View style={[styles.container.flexItem1]}>
+          <Text style={styles.font.dark}>Bloqueado:</Text>
+          <Switch
+            onValueChange={toggleLocks}
+            value={formState.locks}
+            style={{
+              alignSelf: 'flex-start',
+              transform: [{scaleX: 1.2}, {scaleY: 1.2}],
+            }}
+          />
+        </View>
       </View>
-      <Text>Información de hogar</Text>
+
+      <Divider style={styles.divider.small} />
+      <Text style={styles.font.dark}>Información de hogar:</Text>
       <View>
         <Text>Nombre de hogar:</Text>
         <Input
@@ -106,7 +129,8 @@ export default function UserDataEditor({
           {...PROPS_NEW_USER.HOME.NUMBER}
         />
       </View>
-      <Text>Información de vehículo:</Text>
+
+      <Text style={styles.font.dark}>Información de vehículo:</Text>
       <View>
         <Text>Modelo:</Text>
         <Input
@@ -140,6 +164,8 @@ export default function UserDataEditor({
       </View>
       <Button
         title="Editar información"
+        buttonStyle={styles.button.normal}
+        titleStyle={styles.font.dark}
         onPress={() => {
           const dataExists = usersdata === null ? false : true;
           submitHandler(
@@ -149,6 +175,7 @@ export default function UserDataEditor({
             baseURL,
             token,
             dispatch,
+            toggleOverlay,
             setIsUpdatingDetail,
             mode,
           );

@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {colors} from './constants';
 
-const fontSize = {normal: 18, large: 26, small: 11};
+const fontSize = {normal: 18, large: 25, small: 11};
 
 export const font = StyleSheet.create({
   dark: {
@@ -40,6 +40,12 @@ export const font = StyleSheet.create({
     color: colors.dark,
     fontWeight: 'bold',
     fontSize: fontSize.large,
+  },
+  darkLargeCentered: {
+    color: colors.dark,
+    fontWeight: 'bold',
+    fontSize: fontSize.large,
+    alignSelf: 'center',
   },
   darkLargeNoMargin: {
     color: colors.dark,
