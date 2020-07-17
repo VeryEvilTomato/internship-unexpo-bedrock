@@ -1,8 +1,7 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {View} from 'react-native';
 import {Text, Divider} from 'react-native-elements';
-import {useFocusEffect} from '@react-navigation/native';
 
 import styles from '@styles';
 import {funnel} from '@api';
@@ -12,40 +11,28 @@ export const LogComponent = ({log, dispatch, request}) => {
   const {baseURL, token, mode} = request;
   const [number, setNumber] = useState(null);
   const [user, setUser] = useState(null);
-  const options = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  };
 
   // Request number
-  useFocusEffect(
-    useCallback(() => {
-      funnel(mode)
-        .requestNumber(log.number, baseURL, token, dispatch)
-        .then(response => {
-          setNumber(response.data);
-        })
-        .catch(() => {});
-    }, [baseURL, dispatch, log.number, mode, token]),
-  );
+  useEffect(() => {
+    funnel(mode)
+      .requestNumber(log.number, baseURL, token, dispatch)
+      .then(response => {
+        setNumber(response.data);
+      })
+      .catch(() => {});
+  }, [baseURL, dispatch, log.number, mode, token]);
 
   // Request user
-  useFocusEffect(
-    useCallback(() => {
-      if (number !== null) {
-        funnel(mode)
-          .requestProfile(number.user, baseURL, token, dispatch)
-          .then(response => {
-            setUser(response.data);
-          })
-          .catch(() => {});
-      }
-    }, [baseURL, dispatch, mode, number, token]),
-  );
+  useEffect(() => {
+    if (number !== null) {
+      funnel(mode)
+        .requestProfile(number.user, baseURL, token, dispatch)
+        .then(response => {
+          setUser(response.data);
+        })
+        .catch(() => {});
+    }
+  }, [baseURL, dispatch, mode, number, token]);
 
   return (
     <View style={styles.card.wide}>
@@ -70,9 +57,7 @@ export const LogComponent = ({log, dispatch, request}) => {
         <View />
       )}
 
-      <Text style={styles.font.darkNormal}>
-        {dateOpened.toLocaleDateString('es-ES', options)}
-      </Text>
+      <Text style={styles.font.darkNormal}>{log.opened}</Text>
     </View>
   );
 };

@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import {Button, Input, Text, Divider} from 'react-native-elements';
 import {View, Alert} from 'react-native';
 
-import {FORM_INIT, PROPS_CREDENTIALS} from '@constants';
+import {PROPS_CREDENTIALS} from '@constants';
 import styles from '@styles';
-import {authenticateUser, setUrl} from '@redux/actions';
+import {authenticateUser, setOptions} from '@redux/actions';
 import {saveStorageTokens} from '@utils/asyncStorage';
 
 function submitForm(request, formState, reduxDispatch) {
@@ -58,7 +58,7 @@ const LoginScreenComponent = ({request, dispatch}) => {
         <Text style={styles.font.darkNormal}>Dirección IP</Text>
         <Input
           value={ip}
-          maxLength={40}
+          maxLength={100}
           onChangeText={text => {
             setIp(text);
           }}
@@ -68,8 +68,9 @@ const LoginScreenComponent = ({request, dispatch}) => {
           buttonStyle={styles.button.delete}
           titleStyle={styles.font.dark}
           onPress={() => {
-            dispatch(setUrl(ip));
-            Alert.alert('Aviso', 'Configuración correctamente actualizada');
+            dispatch(
+              setOptions({baseURL: ip, baseNUMBER: request.baseNUMBER}, true),
+            );
           }}
         />
       </View>

@@ -24,7 +24,7 @@ const SplashScreenComponent = ({navigation, dispatch}) => {
         if (!options.baseURL || !options.baseNUMBER) {
           dispatch(setOptionsDefault());
         } else {
-          dispatch(setOptions(options));
+          dispatch(setOptions(options, false));
         }
         retrieveStorageTokens()
           .then(token => {
@@ -41,7 +41,10 @@ const SplashScreenComponent = ({navigation, dispatch}) => {
               dispatch(decodeJWT());
               navigation.navigate('DrawerHome');
             } else {
-              navigation.navigate('Login');
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Login'}],
+              });
             }
           });
       });

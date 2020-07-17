@@ -13,12 +13,22 @@ import styles from '@styles';
 
 const LogTrackerScreenComponent = ({request, dispatch, navigation}) => {
   const {baseURL, token, mode} = request;
+  const [isFocused, setFocus] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setFocus(true);
+      return () => {
+        setFocus(false);
+      };
+    }, []),
+  );
 
   return (
     <View style={styles.container.column}>
       <Text style={styles.font.darkLargeCentered}>Lista de registros</Text>
       <Divider style={styles.divider.normal} />
-      <LogList />
+      {isFocused ? <LogList /> : <View />}
     </View>
   );
 };

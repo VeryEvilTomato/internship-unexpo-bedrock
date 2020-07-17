@@ -9,9 +9,7 @@ import styles from '@styles';
 // Configuration submit handler
 
 const configSubmitHandler = (options, dispatch) => {
-  dispatch(setOptions(options)).then(() => {
-    Alert.alert('Aviso', 'Configuración correctamente actualizada');
-  });
+  dispatch(setOptions(options, true)).then(() => {});
 };
 
 /*

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 import {saveStorageOptions} from '@utils/asyncStorage';
+import {httpErrorHandler} from '@utils';
+import {Alert} from 'react-native';
 
 export const GET_TOKEN = 'GET_TOKEN';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
@@ -81,12 +83,7 @@ export function authenticateUser(credentials, request, Alert) {
         }
       })
       .catch(error => {
-        dispatch(invalidateToken());
-        Alert.alert(
-          '',
-          'Credenciales inválidos, verifique el nombre de usuario y contraseña',
-          [{text: 'Continuar', onPress: () => {}}],
-        );
+        httpErrorHandler(error, dispatch, invalidateToken);
       });
   };
 }
@@ -120,12 +117,12 @@ export function invalidateJWT() {
         }
       })
       .catch(error => {
-        dispatch(invalidateToken());
+        httpErrorHandler(error, dispatch, invalidateToken);
       });
   };
 }
 
-export function setOptions(options) {
+export function setOptions(options, showMsg) {
   return async (dispatch, getState) => {
     const {request} = getState();
 
@@ -133,7 +130,9 @@ export function setOptions(options) {
       .then(options => {
         dispatch(setSysNum(options.baseNUMBER));
         dispatch(setUrl(options.baseURL));
-        return true;
+        if (showMsg) {
+          Alert.alert('Aviso', 'Configuración correctamente actualizada');
+        }
       })
       .catch(error => {
         //

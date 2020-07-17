@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import {Alert} from 'react-native';
 
 export const saveBaseSysNum = async baseNUMBER => {
   try {

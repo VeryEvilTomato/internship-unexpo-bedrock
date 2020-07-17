@@ -3,6 +3,7 @@ import {Alert} from 'react-native';
 
 import {STATUS, URL} from '@constants';
 import {invalidateJWT} from '@redux/actions';
+import {httpErrorHandler} from '@utils';
 
 export const requestLogsDate = async () => {
   // To-do
@@ -62,6 +63,6 @@ export const createLog = async (params, dispatch) => {
       };
     })
     .catch(error => {
-      dispatch(invalidateJWT());
+      httpErrorHandler(error);
     });
 };
