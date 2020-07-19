@@ -10,4 +10,4 @@ from .serializers import NumberSerializer
 class NumberViewSet(viewsets.ModelViewSet):
     serializer_class = NumberSerializer
     queryset = Number.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]

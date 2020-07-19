@@ -45,4 +45,4 @@ class UserDataViewSet(viewsets.ModelViewSet):
     # only the admin can use these view
     serializer_class = UserDataSerializers
     queryset = UserData.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]

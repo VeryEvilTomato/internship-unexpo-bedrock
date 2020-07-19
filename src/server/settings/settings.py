@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+from datetime import timedelta
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -85,15 +85,15 @@ WSGI_APPLICATION = "settings.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
+        # "ENGINE": "django.db.backends.sqlite3",
+        # "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
         # Esto es para PostgreSQL
-        # "ENGINE": "django.db.backends.postgresql_psycopg2",
-        # "NAME": 'Django',
-        # 'USER': 'djangouser',
-        # 'PASSWORD': '24963808',
-        # 'HOST': '192.168.1.102',
-        # 'DATABASE_PORT': '5432',
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": 'django',
+        'USER': 'djangouser',
+        'PASSWORD': '24963808',
+        'HOST': 'localhost',
+        'DATABASE_PORT': '5432',
     }
 }
 
@@ -107,9 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-        'OPTIONS': {
-            'min_length': 9,
-        }
+        'OPTIONS': {'min_length': 9,}
     },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
@@ -137,13 +135,18 @@ STATIC_URL = "/static/"
 
 # Pagination control
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS":
-        "rest_framework.pagination.PageNumberPagination",
-        "PAGE_SIZE": 10,
-
+    # "DEFAULT_PAGINATION_CLASS":
+    #     "rest_framework.pagination.PageNumberPagination",
+    #     "PAGE_SIZE": 10,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=16),
 }

@@ -17,21 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework import routers
 from userData.views import UserViewSet, UserDataViewSet
 from nums.views import NumberViewSet
-import logs.views as LogViews
+from logs.views import LogViewSet, ListLogsByDate
+from django.conf.urls import url
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'usersdata', UserDataViewSet)
 router.register(r'nums', NumberViewSet)
-router.register(r'logs', LogViews.LogViewSet)
+router.register(r'logs', LogViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,4 +41,6 @@ urlpatterns = [
     path('api/toke/refresh/', TokenRefreshView.as_view()),
     path('api/token/verify/', TokenVerifyView.as_view(), name="token_verify"),
     path('api-auth/', include('rest_framework.urls')),
+    #path('api/log-date/<str:opened>/', ListLogsByDate.as_view(), name='opened'),
+    url('^api/log-date/(?P<opened>.+)/$', ListLogsByDate.as_view())
 ]

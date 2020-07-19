@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from userData.models import UserData
 from nums.models import Number
+from django.utils.translation import gettext_lazy as _
 
 # Register your models here.
 
@@ -16,7 +17,6 @@ class UserInline(admin.StackedInline):
     model = UserData
     can_delete = False
     verbose_name_plural = 'Users'
-    
 
 
 class NumsInline(admin.StackedInline):
@@ -29,12 +29,25 @@ class NumsInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     # Define a new UserAdmin
     inlines = (UserInline, NumsInline)
-    def get_fieldsets(self, request, obj= None):
-        return [
-            (None, {'fields': ('username', 'password')}),
-            (None, {'fields': ('is_active', 'is_staff')}),
-            (None, {'fields': ('first_name', 'last_name', 'email')}),
-        ]
+    fieldsets = (
+        (None,{'fields': ('username', 'password')}),
+        (None, {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        (None, {'fields': ('first_name', 'last_name', 'email')}),        
+    )
+     
+    list_display = (
+        'username',
+        'first_name',
+        'last_name',
+        'usersdata',
+       
+    )
+
+    list_filter = (
+        'usersdata__streetBlockNumber',
+        'usersdata__homeNumber',
+        'is_active',
+    )
 
 admin.site.site_header = 'Interfaz de Administración'
 # Re-register UserAdmin
