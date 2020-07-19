@@ -6,6 +6,7 @@ import {ScrollView} from 'react-native';
 import {FORM_INIT, PROPS_NEW_USER, PROPS_CREDENTIALS} from '@constants';
 import {funnel} from '@api';
 import {STATUS} from '@constants';
+import styles from '@styles';
 
 function submitHandler(formState, baseURL, token, dispatch, navigation, mode) {
   funnel(mode)
@@ -35,8 +36,8 @@ export const UserFormScreenComponent = ({request, dispatch, navigation}) => {
   });
 
   return (
-    <ScrollView>
-      <Text>Introduzca su nombre:</Text>
+    <ScrollView style={styles.container.columnScroll}>
+      <Text style={styles.font.dark}>Introduzca su nombre:</Text>
       <Input
         value={formState.first_name}
         onChangeText={text => {
@@ -45,7 +46,7 @@ export const UserFormScreenComponent = ({request, dispatch, navigation}) => {
         {...PROPS_NEW_USER.BASE}
         {...PROPS_NEW_USER.NAME.FIRST}
       />
-      <Text>Introduzca su apellido:</Text>
+      <Text style={styles.font.dark}>Introduzca su apellido:</Text>
       <Input
         value={formState.last_name}
         onChangeText={text => {
@@ -54,7 +55,7 @@ export const UserFormScreenComponent = ({request, dispatch, navigation}) => {
         {...PROPS_NEW_USER.BASE}
         {...PROPS_NEW_USER.NAME.LAST}
       />
-      <Text>Indique su contraseña:</Text>
+      <Text style={styles.font.dark}>Indique su contraseña:</Text>
       <Input
         value={formState.password}
         onChangeText={text => {
@@ -62,7 +63,7 @@ export const UserFormScreenComponent = ({request, dispatch, navigation}) => {
         }}
         {...PROPS_CREDENTIALS.PASSWORD}
       />
-      <Text>Repita su contraseña:</Text>
+      <Text style={styles.font.dark}>Repita su contraseña:</Text>
       <Input
         value={formState.repeatPassword}
         onChangeText={text => {
@@ -70,17 +71,19 @@ export const UserFormScreenComponent = ({request, dispatch, navigation}) => {
         }}
         {...PROPS_CREDENTIALS.PASSWORD}
       />
-      <Text>
-        Su contraseña debe contener entre 10 a 30 caracteres, por lo menos una
-        letra, un número y un caracter especial
+      <Text style={styles.font.darkNormal}>
+        Su contraseña debe contener entre 10 a 20 caracteres, por lo menos una
+        letra y un número.
       </Text>
       <Button
+        buttonStyle={styles.button.normal}
+        titleStyle={styles.font.dark}
         title="Agregar al sistema"
         onPress={() =>
           submitHandler(formState, baseURL, token, dispatch, navigation, mode)
         }
       />
-      <Divider />
+      <Divider style={styles.divider.normal} />
     </ScrollView>
   );
 };

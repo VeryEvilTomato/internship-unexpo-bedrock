@@ -3,7 +3,7 @@ import {INPUT} from '@constants';
 // Checkups/Sanitization on login data and user information strings.
 
 export function inputValidation(field) {
-  let errors = [];
+  const errors = [];
   let checkups = [];
 
   switch (field.type) {
@@ -29,8 +29,8 @@ export function inputValidation(field) {
     case INPUT.PASSWORD:
       checkups = [
         {
-          pattern: '^.{10,30}',
-          message: 'Debe contener entre 10 a 30 caracteres',
+          pattern: '^.{10,20}',
+          message: 'Debe contener entre 10 a 20 caracteres',
         },
         {
           pattern: '^(?=.*?[A-Za-z]).{0,}$',
@@ -40,10 +40,12 @@ export function inputValidation(field) {
           pattern: '^(?=.*?[0-9]).{0,}$',
           message: 'Por lo menos un número',
         },
+        /*
         {
           pattern: '^(?=.*?[.#?!@$ %^&*-]).{0,}$',
           message: 'Por lo menos un caracter especial',
         },
+        */
       ];
       checkups.forEach(checkup => {
         if (!field.string.match(new RegExp(checkup.pattern))) {

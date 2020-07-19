@@ -1,10 +1,16 @@
 import axios from 'axios';
 
+import {saveStorageOptions} from '@utils/asyncStorage';
+import {httpErrorHandler} from '@utils';
+import {Alert} from 'react-native';
+
 export const GET_TOKEN = 'GET_TOKEN';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 export const INVALIDATE_TOKEN = 'INVALIDATE_TOKEN';
 export const DECODE_JWT = 'DECODE_JWT';
 export const CHANGE_OPMODE = 'CHANGE_OPMODE';
+export const SET_URL = 'SET_URL';
+export const SET_SYS_NUM = 'SET_SYS_NUM';
 
 const requestToken = () => {
   return {
@@ -38,6 +44,20 @@ export const changeOpMode = mode => {
   };
 };
 
+export const setUrl = url => {
+  return {
+    type: SET_URL,
+    payload: url,
+  };
+};
+
+export const setSysNum = num => {
+  return {
+    type: SET_SYS_NUM,
+    payload: num,
+  };
+};
+
 export function authenticateUser(credentials, request, Alert) {
   return async dispatch => {
     dispatch(requestToken());
@@ -63,12 +83,7 @@ export function authenticateUser(credentials, request, Alert) {
         }
       })
       .catch(error => {
-        dispatch(invalidateToken());
-        Alert.alert(
-          '',
-          'Credenciales inválidos, verifique el nombre de usuario y contraseña',
-          [{text: 'Continuar', onPress: () => {}}],
-        );
+        httpErrorHandler(error, dispatch, invalidateToken);
       });
   };
 }
@@ -102,7 +117,45 @@ export function invalidateJWT() {
         }
       })
       .catch(error => {
-        dispatch(invalidateToken());
+        httpErrorHandler(error, dispatch, invalidateToken);
+      });
+  };
+}
+
+export function setOptions(options, showMsg) {
+  return async (dispatch, getState) => {
+    const {request} = getState();
+
+    return saveStorageOptions(options)
+      .then(options => {
+        dispatch(setSysNum(options.baseNUMBER));
+        dispatch(setUrl(options.baseURL));
+        if (showMsg) {
+          Alert.alert('Aviso', 'Configuración correctamente actualizada');
+        }
+      })
+      .catch(error => {
+        //
+      });
+  };
+}
+
+export function setOptionsDefault() {
+  return async (dispatch, getState) => {
+    const {request} = getState();
+    const options = {
+      baseNUMBER: '+584148302419',
+      baseURL: 'http://192.168.0.108:8000/api',
+    };
+
+    return saveStorageOptions(options)
+      .then(options => {
+        dispatch(setSysNum(options.baseNUMBER));
+        dispatch(setUrl(options.baseURL));
+        return true;
+      })
+      .catch(error => {
+        //
       });
   };
 }

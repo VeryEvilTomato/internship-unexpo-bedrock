@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import {Text} from 'react-native-elements';
 import {View} from 'react-native';
 
+import styles from '@styles';
+
 /*
  * Active session user information componen
  */
@@ -11,10 +13,16 @@ const UserBoardComponent = ({userData, isAdmin}) => {
 
   return (
     <View>
-      <Text>
+      <Text style={styles.font.darkLarge}>
         ¡Bienvenid@ {first_name} {last_name}!
       </Text>
-      {isAdmin ? <Text>Usted posee derechos de administrador</Text> : <View />}
+      {isAdmin ? (
+        <Text style={styles.font.darkNormal}>
+          Usted posee derechos de administrador
+        </Text>
+      ) : (
+        <View />
+      )}
     </View>
   );
 };

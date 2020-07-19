@@ -3,13 +3,32 @@ import {Alert} from 'react-native';
 
 import {STATUS, URL} from '@constants';
 import {invalidateJWT} from '@redux/actions';
+import {httpErrorHandler} from '@utils';
 
 export const requestLogsDate = async () => {
   // To-do
 };
 
-export const requestAllLogs = async () => {
-  // To-do
+export const requestAllLogs = async (params, dispatch) => {
+  const {baseURL, token} = params;
+
+  return axios({
+    method: 'get',
+    baseURL,
+    url: `${URL.LOGS}/`,
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+    },
+  })
+    .then(response => {
+      return {
+        status: STATUS.SUCCESS,
+        data: response.data,
+      };
+    })
+    .catch(error => {
+      dispatch(invalidateJWT());
+    });
 };
 
 export const createLog = async (params, dispatch) => {
@@ -44,6 +63,6 @@ export const createLog = async (params, dispatch) => {
       };
     })
     .catch(error => {
-      dispatch(invalidateJWT());
+      httpErrorHandler(error);
     });
 };
