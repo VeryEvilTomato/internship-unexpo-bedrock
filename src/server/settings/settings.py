@@ -85,15 +85,15 @@ WSGI_APPLICATION = "settings.wsgi.application"
 
 DATABASES = {
     "default": {
-        # "ENGINE": "django.db.backends.sqlite3",
-        # "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
         # Esto es para PostgreSQL
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": 'django',
-        'USER': 'djangouser',
-        'PASSWORD': '24963808',
-        'HOST': 'localhost',
-        'DATABASE_PORT': '5432',
+        # "ENGINE": "django.db.backends.postgresql_psycopg2",
+        # "NAME": 'django',
+        # 'USER': 'djangouser',
+        # 'PASSWORD': '24963808',
+        # 'HOST': 'localhost',
+        # 'DATABASE_PORT': '5432',
     }
 }
 
@@ -138,7 +138,7 @@ REST_FRAMEWORK = {
     # "DEFAULT_PAGINATION_CLASS":
     #     "rest_framework.pagination.PageNumberPagination",
     #     "PAGE_SIZE": 10,
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',

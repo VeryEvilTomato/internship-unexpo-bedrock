@@ -5,9 +5,9 @@ from logs.models import Log
 
 
 class AdminLogs(admin.ModelAdmin):
-    list_display = ("number", "opened")
-    list_filter = ("opened",)
-    date_hierarchy = "opened"
+    list_display = ("number", "opening_date")
+    list_filter = ("opening_date",)
+    date_hierarchy = "opening_date"
 
 
 admin.site.register(Log, AdminLogs)
