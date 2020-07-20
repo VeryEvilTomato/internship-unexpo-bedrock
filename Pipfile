@@ -16,7 +16,6 @@ paho-mqtt = "*"
 psycopg2 = "*"
 pyserial = "*"
 django-filter = "*"
-python-dateutil = "*"
 
 [requires]
 python_version = "3.7"

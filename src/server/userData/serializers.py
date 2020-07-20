@@ -24,11 +24,11 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
     # Model User fields that get serialized
-
     class Meta:
         model = get_user_model()
         fields = [
             "id",
+            'is_superuser',
             "username",
             "password",
             "first_name",
