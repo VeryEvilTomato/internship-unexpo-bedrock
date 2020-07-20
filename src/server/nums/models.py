@@ -23,4 +23,4 @@ class Number(models.Model):
         ordering = ["number"]
 
     def __str__(self):
-        return 'Telefono= %s | Datos del Usuario= %s' % (self.number, self.user)
+        return 'Telefono= %s | Usuario= %s' % (self.number, self.user)

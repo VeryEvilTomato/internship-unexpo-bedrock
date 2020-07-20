@@ -7,9 +7,7 @@ from .serializers import LogSerializer
 import logs.mqtt as mqtt
 
 from time import sleep
-from django.utils import timezone
-from dateutil.parser import parse
-from datetime import datetime
+
 
 #--------------------------------------------------------------------------
 class Log_list(APIView):
@@ -30,8 +28,24 @@ class Log_list(APIView):
         """
         serializer= LogSerializer(data=request.data)
         if serializer.is_valid():
+
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            print("Opening gate")
+            mqtt.client.publish(mqtt.TOPIC, payload = "1", qos=mqtt.QOS, retain=False)
+            print(mqtt.message_flag)
+            i=0
+            while i<=4 and mqtt.message_flag == False:
+                i+=1
+                if i ==4:
+                    return Response(
+                        {"Fail": "---Modulo Fuera de Linea---"},
+                        status=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    )
+                sleep(1)
+            if mqtt.message_flag == True:
+                mqtt.message_flag = False
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #-----------------------------------------------------------------------------------

@@ -32,7 +32,6 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'usersdata', UserDataViewSet)
 router.register(r'nums', NumberViewSet)
-#router.register(r'logs', LogViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,12 +40,10 @@ urlpatterns = [
     path('api/toke/refresh/', TokenRefreshView.as_view()),
     path('api/token/verify/', TokenVerifyView.as_view(), name="token_verify"),
     path('api-auth/', include('rest_framework.urls')),
-    # path('api/log-date/<str:opened>/', ListLogsByDate.as_view(), name='opened'),
-    # url('^api/log-date/(?P<opened>.+)/$', ListLogsByDate.as_view())
-    path('api/logs/', Log_list.as_view()),
-    path('api/logs/date/<str:opening_date>/', Logs_by_date.as_view()),
-    path('api/logs/number/<int:number>/', Log_detail.as_view()),
-    path('api/logs/number/<int:number>/date/<str:opening_date>/', Log_detail_by_date.as_view())
+    path('api/logs/', Log_list.as_view(), name = 'log-list'),
+    path('api/logs/date/<str:opening_date>/', Logs_by_date.as_view(), name= 'log-date'),
+    path('api/logs/number/<int:number>/', Log_detail.as_view(), name= 'log-number'),
+    path('api/logs/number/<int:number>/date/<str:opening_date>/', Log_detail_by_date.as_view(), name= 'log-number-date'),
     
 ]
 
