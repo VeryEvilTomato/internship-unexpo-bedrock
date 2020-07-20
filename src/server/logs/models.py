@@ -1,5 +1,7 @@
 from django.db import models
 from nums.models import Number
+from django.utils.translation import gettext_lazy as _
+
 
 # Database model for a gate opening log
 class Log(models.Model):
@@ -7,29 +9,24 @@ class Log(models.Model):
         Modelo para almacenar el Registro de apertura del portón
     """
 
-    # error = models.IntegerField(
-    #     verbose_name='Codigo de Error',
-    #     max_length=1,
-    # )
-    """
-        Si ocurre un Error en la comunicacion:
-        este campo no lo entiendo, actualmente para atender errores
-        se utilizan los codigos de estado de respuesta HTTP:
-        - (100-199). Respuestas informativas
-        - (200-299). Respuestas satisfactorias
-        - (300-399). Redirecciones
-        - (400-499). Errores del cliente
-        - (500-599). Errores del Servidor
-            -> en los errores de servidor encaja perfectamente
-               el error de "El ESP32 no responde", ya que el 
-               modulo ESP forma parte de la estructura del servidor.
-    """
-    method = models.IntegerField(verbose_name='Metodo de acceso', null=True)
+    error = models.PositiveIntegerField(
+        verbose_name='Codigo de Error',
+        default=0,
+    )
+    
+    class Access_method(models.TextChoices):
+        WEB = '0', _('WEB')
+        GSM = '1', _('GSM')
+    method = models.CharField(
+        verbose_name='Metodo de acceso',
+        choices= Access_method.choices,
+        default= Access_method.WEB,
+        max_length=1,
+    )
     """
         Metodo de acceso al servidor:
-        0: Web
-        1: Local
-        2: Gsm
+        0: WEB
+        1: GSM
     """
     number= models.ForeignKey(
         Number,

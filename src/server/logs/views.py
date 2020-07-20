@@ -30,7 +30,6 @@ class Log_list(APIView):
         
         if serializer.is_valid():
 
-            serializer.save()
             print("Opening gate")
             mqtt.client.publish(mqtt.TOPIC, payload = "1", qos=mqtt.QOS, retain=False)
             print(mqtt.message_flag)
@@ -38,12 +37,14 @@ class Log_list(APIView):
             while i<=4 and mqtt.message_flag == False:
                 i+=1
                 if i ==4:
+                    serializer.save(error=32)
                     return Response(
                         {"Fail": "---Modulo Fuera de Linea---"},
                         status=status.HTTP_503_SERVICE_UNAVAILABLE,
                     )
                 sleep(1)
             if mqtt.message_flag == True:
+                serializer.save()
                 mqtt.message_flag = False
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
     
