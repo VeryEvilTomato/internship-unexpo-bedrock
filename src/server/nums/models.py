@@ -10,7 +10,7 @@ class Number(models.Model):
     number = models.CharField(
         max_length=11,
         unique=True,
-        verbose_name="Numero de Telefono"
+        verbose_name="Numero de Telefono",
     )
 
     user = models.ForeignKey(

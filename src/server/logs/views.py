@@ -27,6 +27,7 @@ class Log_list(APIView):
             formulado envia el HTTP estatus code 400
         """
         serializer= LogSerializer(data=request.data)
+        print (serializer)
         if serializer.is_valid():
 
             serializer.save()
