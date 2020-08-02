@@ -58,6 +58,11 @@ export const icon = {
   renew: () => {
     return <Icon color={colors.dark} name="autorenew" size={iconSize.normal} />;
   },
+  filter: () => {
+    return (
+      <Icon color={colors.dark} name="filter-list" size={iconSize.normal} />
+    );
+  },
   exit: () => {
     return (
       <Icon color={colors.dark} name="exit-to-app" size={iconSize.normal} />

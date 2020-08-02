@@ -84,5 +84,6 @@ export const PROPS_NEW_USER = {
   },
   PHONE_NUMBER: {
     maxLength: 11,
+    leftIcon: {type: 'material', name: 'call'},
   },
 };

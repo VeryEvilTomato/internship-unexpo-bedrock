@@ -22,7 +22,7 @@ const UserProfileListComponent = ({request, navigation, dispatch}) => {
       funnel(mode)
         .requestAllProfiles(baseURL, token, dispatch)
         .then(response => {
-          setUserDataList(response.data.results);
+          setUserDataList(response.data);
         })
         .catch(() => {});
     }, [baseURL, dispatch, mode, token]),

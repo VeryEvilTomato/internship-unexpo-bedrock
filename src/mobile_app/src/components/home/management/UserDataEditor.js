@@ -96,7 +96,6 @@ export default function UserDataEditor({
           />
         </View>
       </View>
-
       <Divider style={styles.divider.small} />
       <Text style={styles.font.dark}>Información de hogar:</Text>
       <View>
@@ -162,6 +161,7 @@ export default function UserDataEditor({
           {...PROPS_NEW_USER.CAR.COLOR}
         />
       </View>
+
       <Button
         title="Editar información"
         buttonStyle={styles.button.normal}

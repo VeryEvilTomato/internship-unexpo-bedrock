@@ -6,36 +6,65 @@ import {View, FlatList} from 'react-native';
 import styles from '@styles';
 import {funnel} from '@api';
 import {Log} from './Log';
+import {dateToStringES} from '@utils';
 
 /*
  * Shows list of logs.
  */
 
-const LogListComponent = ({request: {mode, baseURL, token}, dispatch}) => {
-  const [logsState, setLogsState] = useState([]);
+const LogListComponent = ({
+  request: {mode, baseURL, token},
+  dispatch,
+  filters,
+}) => {
+  const [logsState, setLogsState] = useState(null);
+  const {opening_date} = filters;
 
   // Request log list
   useEffect(() => {
     funnel(mode)
-      .requestAllLogs({baseURL, token}, dispatch)
+      .requestLogsDate(
+        {baseURL, token, dateObj: filters.opening_date},
+        dispatch,
+      )
       .then(response => {
         if (response !== undefined) {
-          const {data} = response;
-          setLogsState(data.results);
+          setLogsState(response.data.reverse());
         }
       })
       .catch(error => {
         console.log(error);
       });
-  }, [baseURL, dispatch, mode, token]);
+  }, [baseURL, dispatch, filters.opening_date, mode, token]);
 
   return (
     <View style={styles.card.scroll}>
-      {logsState.length > 0 ? <View /> : <Text>Cargando...</Text>}
+      {logsState !== null ? (
+        <View>
+          {logsState.length === 0 ? (
+            <View>
+              <Text style={styles.font.dark}>
+                No existen registros para la fecha:
+              </Text>
+              <Text style={styles.font.darkNormal}>
+                {dateToStringES(opening_date)}
+              </Text>
+            </View>
+          ) : (
+            <View />
+          )}
+        </View>
+      ) : (
+        <Text>Cargando...</Text>
+      )}
       <FlatList
         data={logsState}
-        renderItem={({item}) => <Log log={item} />}
-        keyExtractor={item => item.opened}
+        renderItem={({item}) => {
+          if (item.error === 0) {
+            return <Log log={item} />;
+          }
+        }}
+        keyExtractor={item => item.id.toString()}
         extraData={logsState}
       />
     </View>

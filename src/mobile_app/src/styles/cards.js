@@ -28,7 +28,7 @@ export const card = StyleSheet.create({
     // Postioning and size
     ...spacing.normal,
     width: '90%',
-    height: 100,
+    height: 125,
     // Styling
     backgroundColor: colors.secondary,
     borderRadius: 20,

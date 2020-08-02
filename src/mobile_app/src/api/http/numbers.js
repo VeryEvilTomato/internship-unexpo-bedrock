@@ -18,7 +18,6 @@ export const requestNumber = async (id, baseURL, token, dispatch) => {
       return response;
     })
     .catch(error => {
-      console.log(error);
       dispatch(invalidateToken());
     });
 };
@@ -92,7 +91,6 @@ export const updateNumber = async (id, baseURL, token, data, dispatch) => {
       };
     })
     .catch(error => {
-      console.log(error);
       dispatch(invalidateToken());
     });
 };
@@ -117,7 +115,6 @@ export const deleteNumber = async (id, baseURL, token, dispatch) => {
       return response;
     })
     .catch(error => {
-      console.log(error);
       dispatch(invalidateToken());
     });
 };

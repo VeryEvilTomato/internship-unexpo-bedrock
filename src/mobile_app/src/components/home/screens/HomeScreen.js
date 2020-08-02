@@ -3,12 +3,10 @@ import {connect} from 'react-redux';
 import {Button, Text, Divider} from 'react-native-elements';
 import {View} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import {Picker} from '@react-native-community/picker';
 
 import {GateButton} from '../GateButton';
 import {UserBoard} from '../UserBoard';
 import {funnel, allowedModes} from '@api';
-import {changeOpMode} from '@redux/actions';
 import {FORM_INIT} from '@constants';
 import styles from '@styles';
 
@@ -24,6 +22,7 @@ import styles from '@styles';
 const HomeScreenComponent = ({request, dispatch, navigation}) => {
   const {userId, baseURL, token, mode} = request;
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
   const [user, setUser] = useState({
     ...FORM_INIT.USER,
     usersdata: FORM_INIT.USER_DATA,
@@ -37,14 +36,13 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
           .then(response => {
             if (response !== undefined) {
               const {data} = response;
-              setUser(data);
-              if (data.usersdata !== null) {
-                setIsAdmin(data.usersdata.accessLevel === 'AL' ? true : false);
-              }
+              setUser({...data, error: false});
+              setIsAdmin(data.is_staff);
+              setIsBlocked(data.usersdata.locks);
             }
           })
           .catch(error => {
-            console.log(error);
+            setUser({error: true});
           });
       }
     }, [baseURL, dispatch, mode, token, userId]),
@@ -58,7 +56,7 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
         ) : (
           <View />
         )}
-        {allowedModes.gate.includes(mode) ? (
+        {allowedModes.gate.includes(mode) && !isBlocked ? (
           <GateButton userData={user} />
         ) : (
           <View />
@@ -67,7 +65,7 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
       </View>
       <View style={styles.container.columnBetween}>
         <View>
-          {isAdmin ? (
+          {isAdmin && !isBlocked ? (
             <Button
               title="Gestión de usuarios"
               onPress={() => navigation.navigate('UserManagement')}
@@ -79,16 +77,20 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
           ) : (
             <View />
           )}
-          <Button
-            title="Registros de apertura"
-            onPress={() => navigation.navigate('LogTracker')}
-            icon={styles.icon.logTracker()}
-            buttonStyle={styles.button.normal}
-            titleStyle={styles.font.dark}
-            disabled={!allowedModes.profiles.includes(mode)}
-          />
+          {!isBlocked ? (
+            <Button
+              title="Registros de apertura"
+              onPress={() => navigation.navigate('LogTracker')}
+              icon={styles.icon.logTracker()}
+              buttonStyle={styles.button.normal}
+              titleStyle={styles.font.dark}
+              disabled={!allowedModes.profiles.includes(mode)}
+            />
+          ) : (
+            <View />
+          )}
         </View>
-        <View style={styles.container.rowEvenly}>
+        <View style={styles.container.rowStart}>
           <Button
             onPress={() => navigation.navigate('Settings')}
             icon={styles.icon.settingsButton()}
@@ -96,6 +98,7 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
             containerStyle={styles.container.spacingCenter}
             titleStyle={styles.font.dark}
           />
+          {/*
           <View style={styles.card.large}>
             <Text style={styles.font.darkMargin}>Modo de operación</Text>
             <Picker
@@ -107,6 +110,7 @@ const HomeScreenComponent = ({request, dispatch, navigation}) => {
               <Picker.Item label="Mensajes de texto" value="SMS" />
             </Picker>
           </View>
+          */}
         </View>
       </View>
     </View>

@@ -26,6 +26,7 @@ const UserDetailScreenComponent = ({
   const {id} = params;
   const [userState, setUserState] = useState(FORM_INIT.USER);
   const [isUpdatingDetail, setIsUpdatingDetail] = useState(true);
+
   // Override back button functionality so it appropiately works with
   // the UI. This comes handy when a profile has been recently created.
   useFocusEffect(
@@ -43,6 +44,7 @@ const UserDetailScreenComponent = ({
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, [navigation, params.recentlyCreated]),
   );
+
   // Re-request user information.
   useFocusEffect(
     useCallback(() => {
@@ -60,6 +62,7 @@ const UserDetailScreenComponent = ({
       }
     }, [isUpdatingDetail, mode, id, baseURL, token, dispatch]),
   );
+
   return (
     <ScrollView
       style={styles.container.columnScroll}

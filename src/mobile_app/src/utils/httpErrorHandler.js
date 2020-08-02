@@ -5,7 +5,7 @@ export const httpErrorHandler = (error, dispatch, action) => {
   if (error.response) {
     errorMessage = (() => {
       switch (error.response.status) {
-        case 400:
+        case 503:
           return 'El sistema de control del portón no se encuentra funcional.';
         case 401:
           if (action !== undefined) {

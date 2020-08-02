@@ -26,14 +26,21 @@ export default function UserProfile({profile, navigation}) {
         <View style={styles.container.rowStart}>
           <Text style={[styles.font.dark]}>Número(s): </Text>
           <View style={styles.container.columnStart}>
-            {profile.nums.slice(0, 2).map((phone, index) => (
-              <View key={index}>
-                <Text style={styles.font.darkNormal}>
-                  {phone.number}
-                  {index === 1 ? '... ' : ', '}
-                </Text>
-              </View>
-            ))}
+            {profile.nums.length > 0 ? (
+              profile.nums.slice(0, 2).map((phone, index) => (
+                <View key={index}>
+                  <Text style={styles.font.darkNormal}>
+                    {phone.number}
+                    {index === 1 ? '... ' : ', '}
+                  </Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.font.darkNormal}>
+                {' '}
+                No hay números almacenados.
+              </Text>
+            )}
           </View>
         </View>
       </View>

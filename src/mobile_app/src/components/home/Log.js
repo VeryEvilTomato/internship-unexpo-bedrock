@@ -4,60 +4,69 @@ import {View} from 'react-native';
 import {Text, Divider} from 'react-native-elements';
 
 import styles from '@styles';
+import {dateToStringES} from '@utils';
 import {funnel} from '@api';
 
+const methodToText = methodNum => {
+  switch (methodNum) {
+    case 0:
+      return 'Aplicación móvil';
+    case 1:
+      return 'Llamada/SMS';
+    default:
+      return 'Error';
+  }
+};
+
 export const LogComponent = ({log, dispatch, request}) => {
-  const dateOpened = new Date(log.opened);
-  const {baseURL, token, mode} = request;
-  const [number, setNumber] = useState(null);
-  const [user, setUser] = useState(null);
-
-  // Request number
-  useEffect(() => {
-    funnel(mode)
-      .requestNumber(log.number, baseURL, token, dispatch)
-      .then(response => {
-        setNumber(response.data);
-      })
-      .catch(() => {});
-  }, [baseURL, dispatch, log.number, mode, token]);
-
-  // Request user
-  useEffect(() => {
-    if (number !== null) {
-      funnel(mode)
-        .requestProfile(number.user, baseURL, token, dispatch)
-        .then(response => {
-          setUser(response.data);
-        })
-        .catch(() => {});
-    }
-  }, [baseURL, dispatch, mode, number, token]);
+  const {
+    first_name,
+    last_name,
+    username,
+    phone,
+    method,
+    opening_date,
+    opening_time,
+  } = log;
+  const dateOpened = new Date(`${opening_date}T${opening_time}-04:00`);
+  const dateStringES = dateToStringES(dateOpened);
 
   return (
     <View style={styles.card.wide}>
       <View>
-        {user !== null ? (
-          <Text style={styles.font.dark}>
-            {user.first_name} {user.last_name}
-          </Text>
-        ) : (
-          <View />
-        )}
-      </View>
-      <Divider style={styles.divider.small} />
-
-      {number !== null ? (
         <View>
           <Text style={styles.font.dark}>
-            Número: <Text style={styles.font.darkNormal}>{number.number}</Text>
+            {username} - {first_name} {last_name}
           </Text>
         </View>
-      ) : (
-        <View />
-      )}
+        <Divider style={styles.divider.small} />
 
-      <Text style={styles.font.darkNormal}>{log.opened}</Text>
+        <View>
+          {method === '1' ? (
+            <View>
+              <Text style={styles.font.dark}>
+                Número:{' '}
+                <Text style={styles.font.darkNormal}>
+                  {phone === null ? 'Error' : phone}
+                </Text>
+              </Text>
+            </View>
+          ) : (
+            <View />
+          )}
+        </View>
+
+        <Text style={styles.font.dark}>
+          Método:{' '}
+          <Text style={styles.font.darkNormal}>
+            {methodToText(parseInt(method))}
+          </Text>
+        </Text>
+
+        <Text style={styles.font.dark}>
+          Fecha: <Text style={styles.font.darkNormal}>{dateStringES}</Text>
+        </Text>
+      </View>
     </View>
   );
 };

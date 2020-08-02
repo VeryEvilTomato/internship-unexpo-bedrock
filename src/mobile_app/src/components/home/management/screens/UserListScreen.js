@@ -1,11 +1,23 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text} from 'react-native';
 import {Button, Divider} from 'react-native-elements';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {UserProfileList} from '../UserProfileList';
 import styles from '@styles';
 
 export const UserListScreen = ({navigation}) => {
+  const [isFocused, setFocus] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setFocus(true);
+      return () => {
+        setFocus(false);
+      };
+    }, []),
+  );
+
   return (
     <View style={styles.container.columnBetween}>
       <View style={styles.container.rowEvenly}>
@@ -24,7 +36,7 @@ export const UserListScreen = ({navigation}) => {
         />
       </View>
       <Divider style={styles.divider.normal} />
-      <UserProfileList navigation={navigation} />
+      {isFocused ? <UserProfileList navigation={navigation} /> : <View />}
     </View>
   );
 };
