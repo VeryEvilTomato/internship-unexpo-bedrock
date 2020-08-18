@@ -12,6 +12,7 @@ class LogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Log
         fields = [
+            'id',
             'error',
             'number',
             'method',
