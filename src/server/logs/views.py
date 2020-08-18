@@ -80,7 +80,7 @@ class Log_detail(APIView):
             )
     
     def get(self, request, number, format=None):
-        log = Log.objects.filter(number=number)
+        log = Log.objects.filter(number__number=number)
         serializer = LogSerializer(log, many=True)
         return Response(serializer.data)
 
@@ -106,7 +106,7 @@ class Log_detail_by_date(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, number, opening_date, format=None):
-        log = Log.objects.filter(number=number, opening_date = opening_date)
+        log = Log.objects.filter(number__number=number, opening_date = opening_date)
         serializer = LogSerializer(log, many=True)
         return Response(serializer.data)
 
