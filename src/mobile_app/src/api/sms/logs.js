@@ -15,8 +15,12 @@ export const createLog = async (params, dispatch) => {
     // Send SMS
     Alert.alert(
       'Advertencia',
-      'Se abrirá su mensajero para enviar un SMS al sistema, por favor enviar sin alterar el mensaje automático',
+      'Se abrirá su mensajero para enviar un SMS al sistema y abrir el portón, por favor enviar sin alterar el mensaje automático',
       [
+        {
+          text: 'Regresar',
+          onPress: () => {},
+        },
         {
           text: 'Continuar',
           onPress: () => {
@@ -27,10 +31,6 @@ export const createLog = async (params, dispatch) => {
               },
             );
           },
-        },
-        {
-          text: 'Regresar',
-          onPress: () => {},
         },
       ],
       {cancelable: false},

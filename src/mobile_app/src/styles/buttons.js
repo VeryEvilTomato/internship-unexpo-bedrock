@@ -55,8 +55,8 @@ export const button = StyleSheet.create({
   gate: {
     // Postioning and size
     ...spacing.normal,
-    width: '65%',
-    marginTop: 20,
+    width: '60%',
+    marginTop: 10,
     height: 90,
     // Styling
     backgroundColor: colors.secondary,

@@ -6,16 +6,19 @@ import {invalidateJWT} from '@redux/actions';
 import {httpErrorHandler} from '@utils';
 
 export const requestLogsDate = async (params, dispatch) => {
-  const {baseURL, token, dateObj} = params;
+  const {baseURL, token, dateObj, number} = params;
   console.log(dateObj.toISOString());
   const dateString = `${dateObj.getFullYear()}-${dateObj.getMonth() +
     1}-${dateObj.getDate()}`;
-  // const dateString = dateObj.toISOString().slice(0, 10);
+  let url =
+    number === null
+      ? `${URL.LOGS}/date/${dateString}/`
+      : `${URL.LOGS}/number/${number}/date/${dateString}/`;
 
   return axios({
     method: 'get',
     baseURL,
-    url: `${URL.LOGS}/date/${dateString}/`,
+    url: url,
     headers: {
       Authorization: `Bearer ${token.access}`,
     },

@@ -18,13 +18,13 @@ const LogListComponent = ({
   filters,
 }) => {
   const [logsState, setLogsState] = useState(null);
-  const {opening_date} = filters;
+  const {opening_date, number} = filters;
 
   // Request log list
   useEffect(() => {
     funnel(mode)
       .requestLogsDate(
-        {baseURL, token, dateObj: filters.opening_date},
+        {baseURL, token, dateObj: opening_date, number: number},
         dispatch,
       )
       .then(response => {
@@ -35,7 +35,7 @@ const LogListComponent = ({
       .catch(error => {
         console.log(error);
       });
-  }, [baseURL, dispatch, filters.opening_date, mode, token]);
+  }, [baseURL, dispatch, opening_date, mode, number, token]);
 
   return (
     <View style={styles.card.scroll}>

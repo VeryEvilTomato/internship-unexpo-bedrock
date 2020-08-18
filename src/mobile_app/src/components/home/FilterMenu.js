@@ -1,25 +1,17 @@
 import React, {useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {Alert, View, ScrollView} from 'react-native';
 import {Input, Text, Button, Divider} from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import styles from '@styles';
-import {PROPS_NEW_USER} from '@constants';
+import {PROPS_CREDENTIALS} from '@constants';
 
 export const FilterMenu = ({setFilters, filters, toggleOverlay}) => {
   const currentSystemDate = new Date();
   const [show, setShowDatePicker] = useState(false);
   const [form, setForm] = useState({
-    id: null,
-    error: null,
     number: null,
-    method: null,
-    is_staff: null,
-    first_name: null,
-    last_name: null,
-    phone: null,
     opening_date: filters.opening_date,
-    opening_time: null,
   });
 
   return (
@@ -27,11 +19,23 @@ export const FilterMenu = ({setFilters, filters, toggleOverlay}) => {
       <View>
         <Text style={styles.font.darkNormal}>Número:</Text>
         <Input
-          value={form.first_name}
+          value={form.number}
           onChangeText={text => {
-            setForm({...form, first_name: text});
+            if (text.length > 5) {
+              text = text.slice(0, 4) + text.slice(5);
+            } else if (text.length === 5 && text[4] === '-') {
+              text = text.slice(0, 4);
+            }
+            if (text.match('^[0-9]{0,11}$')) {
+              if (text.length > 4) {
+                text = text.slice(0, 4) + '-' + text.slice(4);
+              }
+              setForm({...form, number: text});
+            }
           }}
-          {...PROPS_NEW_USER.PHONE_NUMBER}
+          maxLength={12}
+          keyboardType="phone-pad"
+          {...PROPS_CREDENTIALS.PHONE_NUMBER}
         />
 
         <Text style={styles.font.darkNormal}>Fecha:</Text>
@@ -71,7 +75,19 @@ export const FilterMenu = ({setFilters, filters, toggleOverlay}) => {
         <Divider style={styles.divider.normal} />
         <Button
           onPress={() => {
-            setFilters(form);
+            const {number} = form;
+            if (number !== null) {
+              const slicedNumber = number.slice(1, 4) + number.slice(5);
+              if (number.length !== 12) {
+                Alert.alert('', 'Escriba su número telefónico completo', [
+                  {text: 'Continuar', onPress: () => {}},
+                ]);
+              } else {
+                setFilters({...form, number: slicedNumber});
+              }
+            } else {
+              setFilters(form);
+            }
             toggleOverlay();
           }}
           disabled={show}

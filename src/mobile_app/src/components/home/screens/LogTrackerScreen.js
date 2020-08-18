@@ -33,16 +33,8 @@ const ModalStyles = StyleSheet.create({
 
 const LogTrackerScreenComponent = ({request, dispatch, navigation}) => {
   const [filters, setFilters] = useState({
-    id: null,
-    error: null,
     number: null,
-    method: null,
-    is_staff: null,
-    first_name: null,
-    last_name: null,
-    phone: null,
     opening_date: new Date(),
-    opening_time: null,
   });
 
   const [isFocused, setFocus] = useState(false);

@@ -47,6 +47,9 @@ export const icon = {
   gateLargeWifi: () => {
     return <Icon color={colors.dark} name="wifi" size={iconSize.large} />;
   },
+  gateLargeCall: () => {
+    return <Icon color={colors.dark} name="call" size={iconSize.large} />;
+  },
   delete: () => {
     return (
       <Icon color={colors.dark} name="delete-forever" size={iconSize.small} />

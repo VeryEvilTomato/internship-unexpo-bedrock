@@ -1,5 +1,5 @@
 export const allowedModes = {
-  gate: ['HTTP', 'SMS'],
+  gate: ['HTTP', 'SMS', 'CALL'],
   profiles: ['HTTP'],
   numbers: ['HTTP'],
   logs: ['HTTP'],
