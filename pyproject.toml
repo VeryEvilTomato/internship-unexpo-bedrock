@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "unexpo-bedrock"
+version = "0.1.0"
+description = ""
+authors = ["ironwall2496 <gabosorio_3808@hotmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Django = "^3.1.3"
+djangorestframework = "^3.12.1"
+djangorestframework-simplejwt = "^4.5.0"
+paho-mqtt = "^1.5.1"
+psycopg2 = "^2.8.6"
+pyserial = "^3.4"
+django-filter = "^2.4.0"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.5.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
