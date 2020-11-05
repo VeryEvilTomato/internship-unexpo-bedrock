@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "userData",
     "rest_framework",
     "rest_framework_simplejwt",
-    # "channels",
 ]
 
 MIDDLEWARE = [
@@ -107,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-        'OPTIONS': {'min_length': 9,}
+        'OPTIONS': {'min_length': 9, }
     },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
