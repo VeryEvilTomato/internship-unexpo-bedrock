@@ -24,6 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
     # Model User fields that get serialized
+
     class Meta:
         model = get_user_model()
         fields = [
@@ -55,17 +56,3 @@ class UserDataSerializers(serializers.ModelSerializer):
             "brandModel",
             "color",
         ]
-
-
-# class PasswordSerializer(serializers.ModelSerializer):
-#     old_password = serializers.CharField(
-#         write_only=True, required=True, max_length=15)
-#     new_password1 = serializers.CharField(
-#         write_only=True, required=True, max_length=15)
-#     new_password2 = serializers.CharField(
-#         write_only=True, required=True, max_length=15)
-
-#     def check_old_password(self, value):
-#         user = self.context['request'].user
-#         if not user
-#     pass
